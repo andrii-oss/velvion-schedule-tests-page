@@ -4,9 +4,7 @@ import {
   createContext,
   useContext,
   useEffect,
-  useLayoutEffect,
   useState,
-  useSyncExternalStore,
   ReactNode,
 } from "react";
 
@@ -21,56 +19,38 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function subscribe(callback: () => void) {
-  if (typeof window === "undefined") {
-    return () => {};
-  }
-  const observer = new MutationObserver(callback);
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ["class"],
-  });
-  return () => observer.disconnect();
-}
-
-function getSnapshot(): Theme {
-  if (typeof window === "undefined") {
-    return "light";
-  }
-  return document.documentElement.classList.contains("dark") ? "dark" : "light";
-}
-
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const theme = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    () => "light" as Theme
-  );
+  // Спочатку читаємо тему з DOM (встановлену скриптом)
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") {
+      return "light";
+    }
+    return document.documentElement.classList.contains("dark")
+      ? "dark"
+      : "light";
+  });
   const [mounted] = useState(() => typeof window !== "undefined");
 
   const updateTheme = (newTheme: Theme) => {
     if (typeof window !== "undefined") {
       const root = document.documentElement;
+      // Завжди оновлюємо DOM
       if (newTheme === "dark") {
         root.classList.add("dark");
       } else {
         root.classList.remove("dark");
       }
       localStorage.setItem("theme", newTheme);
+      setTheme(newTheme);
+      // Дебаг: перевіряємо, чи клас додався
+      console.log(
+        "Theme updated:",
+        newTheme,
+        "Has dark class:",
+        root.classList.contains("dark")
+      );
     }
   };
-
-  // Синхронно оновлюємо DOM перед рендером, якщо потрібно
-  useLayoutEffect(() => {
-    if (mounted && typeof window !== "undefined") {
-      const isDark = document.documentElement.classList.contains("dark");
-      const currentTheme = isDark ? "dark" : "light";
-      // Оновлюємо тільки якщо тема не співпадає
-      if (currentTheme !== theme) {
-        updateTheme(theme);
-      }
-    }
-  }, [theme, mounted]);
 
   const handleSetTheme = (newTheme: Theme) => {
     updateTheme(newTheme);
