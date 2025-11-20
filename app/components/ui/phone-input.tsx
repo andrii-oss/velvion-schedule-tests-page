@@ -87,10 +87,10 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
         }
       }, [propsValue]);
 
-      // Встановлюємо код країни після зміни, якщо потрібно очистити поле
+      // Set the country code after the change if you need to clear the field
       React.useEffect(() => {
         if (shouldClearAndSetCodeRef.current && pendingCountryCodeRef.current) {
-          // Використовуємо requestAnimationFrame для того, щоб компонент встиг оновитися
+          // Use requestAnimationFrame to ensure the component has time to update
           requestAnimationFrame(() => {
             setCurrentValue(pendingCountryCodeRef.current!);
             onChange?.(pendingCountryCodeRef.current!);
@@ -110,13 +110,13 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
             currentValue.trim() !== "" &&
             currentValue.trim() !== "+";
 
-          // Якщо інпут не пустий і країна змінилася
+          // If the input is not empty and the country has changed
           if (
             hasInputValue &&
             previousCountryRef.current &&
             previousCountryRef.current !== country
           ) {
-            // Встановлюємо код нової країни
+            // Set the new country code
             const countryCode = `+${RPNInput.getCountryCallingCode(
               country
             )}` as RPNInput.Value;

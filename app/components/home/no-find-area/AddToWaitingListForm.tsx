@@ -24,30 +24,30 @@ export default function AddToWaitingListForm() {
     Country | undefined
   >(undefined);
 
-  // Функція для валідації телефонного номера у національному форматі
+  // Function for validating a phone number in the national format
   const validatePhoneNumber = (value: string): boolean => {
     if (!value || value.trim() === "") {
       return false;
     }
 
-    // Якщо номер вже в міжнародному форматі (починається з +)
+    // If the number is already in international format (starts with +)
     if (value.startsWith("+")) {
       return isValidPhoneNumber(value);
     }
 
-    // Якщо номер у національному форматі, перевіряємо з поточною країною
+    // If the number is already in international format (starts with +)
     if (selectedCountry) {
       try {
-        // Спробуємо парсити номер з вказаною країною
+        // Let's try to parse the number with the specified country
         const phoneNumber = parsePhoneNumber(value, selectedCountry);
         return phoneNumber ? phoneNumber.isValid() : false;
       } catch {
-        // Якщо не вдалося розпарсити, спробуємо з міжнародним форматом
+        // If parsing fails, try with international format
         return isValidPhoneNumber(value);
       }
     }
 
-    // Якщо країна не вибрана, використовуємо стандартну перевірку
+    // If no country is selected, use standard validation
     return isValidPhoneNumber(value);
   };
 
@@ -130,7 +130,7 @@ export default function AddToWaitingListForm() {
                       placeholder="Enter your phone number"
                       onCountryChange={(country) => {
                         setSelectedCountry(country);
-                        // Тригеруємо валідацію після зміни країни
+                        // Trigger validation after changing country
                         form.trigger("phoneNumber");
                       }}
                     />
