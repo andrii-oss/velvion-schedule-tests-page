@@ -27,16 +27,19 @@ export default function StartEntering() {
   });
 
   return (
-    <div className="mx-auto max-w-[528px]">
+    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
       <h1 className="text-[32px] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em]">
-        Start by entering your CEP
+        Qual seu CEP?
       </h1>
       <p className="text-[16px] sm:text-[18px] sm:leading-[36px] text-center mb-[30px]">
-        Enter your CEP (zip code) to check availability.
+        Vamos confirmar se já atendemos a sua região.
       </p>
-      <div className="max-w-[425px] w-full mx-auto">
+      <div className="max-w-[425px] w-full mx-auto flex-1 flex flex-col">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(() => console.log("submit"))}>
+          <form
+            onSubmit={form.handleSubmit(() => console.log("submit"))}
+            className="flex-1 flex flex-col"
+          >
             <FormField
               control={form.control}
               name="password"
@@ -63,10 +66,10 @@ export default function StartEntering() {
               )}
             />
             <button
-              className="bg-accent-color hover:bg-transparent border-transparent border-2  hover:border-accent-color hover:border w-full hover:text-accent-color text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+              className="bg-accent-color hover:bg-transparent border-transparent border-2 hover:border-accent-color hover:border w-full hover:text-accent-color text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto"
               type="submit"
             >
-              Continue
+              Continuar
             </button>
           </form>
         </Form>
