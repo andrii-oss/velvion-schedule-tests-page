@@ -27,7 +27,7 @@ export default function StartEntering() {
   });
 
   return (
-    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
+    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full bg-white dark:bg-gray-900">
       <h1 className="text-[32px] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em]">
         Qual seu CEP?
       </h1>

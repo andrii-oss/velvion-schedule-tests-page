@@ -6,6 +6,7 @@ import {
   useEffect,
   useLayoutEffect,
   useState,
+  useSyncExternalStore,
   ReactNode,
 } from "react";
 
@@ -15,25 +16,37 @@ interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  mounted: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
-function getInitialTheme(): Theme {
+function subscribe(callback: () => void) {
+  if (typeof window === "undefined") {
+    return () => {};
+  }
+  const observer = new MutationObserver(callback);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["class"],
+  });
+  return () => observer.disconnect();
+}
+
+function getSnapshot(): Theme {
   if (typeof window === "undefined") {
     return "light";
   }
-  const savedTheme = localStorage.getItem("theme") as Theme | null;
-  if (savedTheme) {
-    return savedTheme;
-  }
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  return document.documentElement.classList.contains("dark") ? "dark" : "light";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const theme = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    () => "light" as Theme
+  );
+  const [mounted] = useState(() => typeof window !== "undefined");
 
   const updateTheme = (newTheme: Theme) => {
     if (typeof window !== "undefined") {
@@ -47,17 +60,25 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  // Синхронно оновлюємо DOM перед рендером
+  // Синхронно оновлюємо DOM перед рендером, якщо потрібно
   useLayoutEffect(() => {
-    updateTheme(theme);
-  }, [theme]);
+    if (mounted && typeof window !== "undefined") {
+      const isDark = document.documentElement.classList.contains("dark");
+      const currentTheme = isDark ? "dark" : "light";
+      // Оновлюємо тільки якщо тема не співпадає
+      if (currentTheme !== theme) {
+        updateTheme(theme);
+      }
+    }
+  }, [theme, mounted]);
 
   const handleSetTheme = (newTheme: Theme) => {
-    setTheme(newTheme);
+    updateTheme(newTheme);
   };
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    const newTheme = theme === "light" ? "dark" : "light";
+    updateTheme(newTheme);
   };
 
   // Прослуховуємо зміни системної теми
@@ -68,8 +89,8 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const handleChange = (e: MediaQueryListEvent) => {
       // Оновлюємо тему тільки якщо користувач не вибрав тему вручну
       if (!localStorage.getItem("theme")) {
-        const newTheme = e.matches ? "dark" : "light";
-        setTheme(newTheme);
+        const newTheme: Theme = e.matches ? "dark" : "light";
+        updateTheme(newTheme);
       }
     };
 
@@ -79,7 +100,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   return (
     <ThemeContext.Provider
-      value={{ theme, setTheme: handleSetTheme, toggleTheme }}
+      value={{ theme, setTheme: handleSetTheme, toggleTheme, mounted }}
     >
       {children}
     </ThemeContext.Provider>

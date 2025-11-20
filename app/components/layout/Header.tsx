@@ -25,11 +25,13 @@ export default function Header() {
           className="h-9 w-9 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 absolute right-6"
           aria-label="Toggle theme"
         >
-          {theme === "light" ? (
-            <Moon className="h-5 w-5" />
-          ) : (
-            <Sun className="h-5 w-5" />
-          )}
+          <span suppressHydrationWarning>
+            {theme === "light" ? (
+              <Moon className="h-5 w-5" />
+            ) : (
+              <Sun className="h-5 w-5" />
+            )}
+          </span>
         </Button>
       </div>
     </header>
