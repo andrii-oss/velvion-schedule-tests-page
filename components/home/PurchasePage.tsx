@@ -56,7 +56,7 @@ function handleCepBackspace(
   }
 }
 
-export default function StartEntering() {
+export default function PurchasePage() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,17 +80,23 @@ export default function StartEntering() {
     }
   };
   return (
-    <div className="mx-auto max-w-[528px] h-full flex flex-col w-full">
+    <div className="mx-auto max-w-[600px] h-full flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
         <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
-          Qual seu CEP?
+          Ótimo, sua região é atendida.
         </h1>
         <p className="text-[16px] sm:text-[18px] dark:text-cyan-light text-blue sm:leading-[36px] text-center">
-          Vamos confirmar se já atendemos a sua região.
+          Agora é o momento de cuidar da sua saúde de forma completa, do coração
+          aos hormônios, dos sinais e marcadores de câncer à tireoide e além.
+          Mantenha-se sempre um passo à frente.
         </p>
       </div>
 
       <div className="w-full mx-auto flex flex-col h-full">
+        <h2 className="text-dark dark:text-cyan-light text-[16px] font-bold">
+          Escolha uma opção
+        </h2>
+        <p>Selecione a forma de pagamento que preferir.</p>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
