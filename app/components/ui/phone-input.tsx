@@ -26,11 +26,21 @@ type PhoneInputProps = Omit<
 > &
   Omit<RPNInput.Props<typeof RPNInput.default>, "onChange"> & {
     onChange?: (value: RPNInput.Value) => void;
+    onCountryChange?: (country: RPNInput.Country | undefined) => void;
   };
 
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-    ({ className, onChange, value: propsValue, ...props }, ref) => {
+    (
+      {
+        className,
+        onChange,
+        onCountryChange: onCountryChangeProp,
+        value: propsValue,
+        ...props
+      },
+      ref
+    ) => {
       // Use a consistent default for SSR to prevent hydration mismatch
       const [defaultCountry, setDefaultCountry] = React.useState<Country>("GB");
       const [selectedCountry, setSelectedCountry] = React.useState<
@@ -116,8 +126,9 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
 
           setSelectedCountry(country);
           previousCountryRef.current = country;
+          onCountryChangeProp?.(country);
         },
-        [currentValue]
+        [currentValue, onCountryChangeProp]
       );
 
       return (

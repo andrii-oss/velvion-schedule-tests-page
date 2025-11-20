@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Form,
   FormControl,
@@ -11,13 +12,48 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { isValidPhoneNumber } from "react-phone-number-input";
+import {
+  isValidPhoneNumber,
+  parsePhoneNumber,
+  Country,
+} from "react-phone-number-input";
 import { PhoneInput } from "../../ui/phone-input";
 
 export default function AddToWaitingListForm() {
+  const [selectedCountry, setSelectedCountry] = React.useState<
+    Country | undefined
+  >(undefined);
+
+  // Функція для валідації телефонного номера у національному форматі
+  const validatePhoneNumber = (value: string): boolean => {
+    if (!value || value.trim() === "") {
+      return false;
+    }
+
+    // Якщо номер вже в міжнародному форматі (починається з +)
+    if (value.startsWith("+")) {
+      return isValidPhoneNumber(value);
+    }
+
+    // Якщо номер у національному форматі, перевіряємо з поточною країною
+    if (selectedCountry) {
+      try {
+        // Спробуємо парсити номер з вказаною країною
+        const phoneNumber = parsePhoneNumber(value, selectedCountry);
+        return phoneNumber ? phoneNumber.isValid() : false;
+      } catch {
+        // Якщо не вдалося розпарсити, спробуємо з міжнародним форматом
+        return isValidPhoneNumber(value);
+      }
+    }
+
+    // Якщо країна не вибрана, використовуємо стандартну перевірку
+    return isValidPhoneNumber(value);
+  };
+
   const formSchema = z.object({
     fullName: z.string().min(2, "minimum 2 characters"),
-    phoneNumber: z.string().refine((value) => isValidPhoneNumber(value), {
+    phoneNumber: z.string().refine((value) => validatePhoneNumber(value), {
       message: "Invalid phone number",
     }),
     email: z
@@ -92,6 +128,11 @@ export default function AddToWaitingListForm() {
                     <PhoneInput
                       {...field}
                       placeholder="Enter your phone number"
+                      onCountryChange={(country) => {
+                        setSelectedCountry(country);
+                        // Тригеруємо валідацію після зміни країни
+                        form.trigger("phoneNumber");
+                      }}
                     />
                   </FormControl>
                   <span>
