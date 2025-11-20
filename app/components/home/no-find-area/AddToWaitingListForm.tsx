@@ -88,7 +88,7 @@ export default function AddToWaitingListForm() {
                     <FormLabel className="text-[22px] sm:h-[26px] text-black">
                       How should we call you?
                     </FormLabel>
-                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-text-muted">
+                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-gray">
                       Name needed for the waiting list.
                     </FormLabel>
                   </div>
@@ -98,7 +98,7 @@ export default function AddToWaitingListForm() {
                       type="text"
                       {...field}
                       placeholder="Enter your full name"
-                      className="w-full text-[16px] outline-none h-[28px] pb-[6px] border-b border-border-default placeholder:text-placeholder"
+                      className="w-full text-[16px] outline-none h-[28px] pb-[6px] border-b border-gray placeholder:text-placeholder"
                     />
                   </FormControl>
                   <span>
@@ -119,7 +119,7 @@ export default function AddToWaitingListForm() {
                     <FormLabel className="text-[22px] sm:h-[26px] text-black">
                       What is your WhatsApp number?
                     </FormLabel>
-                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-text-muted">
+                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-gray">
                       We'll notify you here.
                     </FormLabel>
                   </div>
@@ -153,7 +153,7 @@ export default function AddToWaitingListForm() {
                     <FormLabel className="text-[22px] sm:h-[26px] text-black">
                       What is your e-mail?
                     </FormLabel>
-                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-text-muted">
+                    <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-gray">
                       We'll send you a confirmation.
                     </FormLabel>
                   </div>
@@ -167,7 +167,7 @@ export default function AddToWaitingListForm() {
                         const noSpaces = e.target.value.replace(/\s+/g, "");
                         field.onChange(noSpaces);
                       }}
-                      className="w-full text-[16px] outline-none h-[28px] pb-[6px] border-b border-border-default placeholder:text-placeholder"
+                      className="w-full text-[16px] outline-none h-[28px] pb-[6px] border-b border-gray placeholder:text-placeholder"
                     />
                   </FormControl>
                   <span>
@@ -181,7 +181,7 @@ export default function AddToWaitingListForm() {
             />
 
             <button
-              className="bg-accent-color hover:bg-transparent border-transparent border-2 hover:border-accent-color hover:border w-full hover:text-accent-color text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
               type="submit"
             >
               Continue

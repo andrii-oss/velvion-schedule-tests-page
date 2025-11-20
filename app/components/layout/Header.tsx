@@ -17,7 +17,7 @@ export default function Header() {
   const logoSrc = `/logo-${currentTheme === "light" ? "light" : "dark"}.svg`;
 
   return (
-    <header className="sticky top-0 z-50 w-full dark:bg-surface-dark bg-surface-light border-b border-gray-200 dark:border-gray-800">
+    <header className="sticky top-0 z-50 w-full dark:bg-dark bg-cream border-b border-gray-200 dark:border-gray-800">
       <div className="container mx-auto px-6 py-[30px] flex items-center justify-center">
         <Image
           src={logoSrc}

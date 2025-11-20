@@ -3,30 +3,16 @@
 @variant dark (.dark &);
 
 @theme {
-  /* Surface colors (backgrounds) */
-  --color-surface-light: #f9f9f7;
-  --color-surface-dark: #2b2d2f;
-  --color-surface-black: #0a0a0a;
-
-  /* Text colors */
-  --color-text-primary: #2b2d2f;
-  --color-text-primary-dark: #ededed;
-  --color-text-secondary: #8898a8;
-  --color-text-secondary-dark: #c3e7ed;
-  --color-text-muted: #7e7e7e;
-  --color-text-muted-dark: #c3e7ed;
-
-  /* Border colors */
-  --color-border-default: #7e7e7e;
-  --color-border-default-dark: #c3e7ed;
-  --color-border-input: #3c3d42;
-  --color-border-input-dark: #c3e7ed;
-
-  /* Accent colors */
-  --color-accent-color: #5dc6d5;
-  --color-accent-light: #c3e7ed;
-
-  /* Placeholder colors */
+  /* Base colors */
+  --color-cream: #f9f9f7;
+  --color-dark: #2b2d2f;
+  --color-black: #0a0a0a;
+  --color-light: #ededed;
+  --color-blue: #8898a8;
+  --color-gray: #7e7e7e;
+  --color-dark-gray: #3c3d42;
+  --color-cyan: #5dc6d5;
+  --color-cyan-light: #c3e7ed;
   --color-placeholder: #cccccc;
 }
 
@@ -38,7 +24,7 @@ body {
 }
 
 body {
-  @apply bg-surface-light dark:bg-surface-black text-text-primary dark:text-text-primary-dark;
+  @apply bg-cream dark:bg-black text-dark dark:text-light;
   font-family: var(--font-satoshi), Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -75,10 +61,10 @@ a {
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px transparent inset !important;
     box-shadow: 0 0 0 30px transparent inset !important;
-    -webkit-text-fill-color: var(--color-text-primary) !important;
-    color: var(--color-text-primary) !important;
+    -webkit-text-fill-color: var(--color-dark) !important;
+    color: var(--color-dark) !important;
     background-color: transparent !important;
-    caret-color: var(--color-text-primary) !important;
+    caret-color: var(--color-dark) !important;
     transition: background-color 5000s ease-in-out 0s;
   }
 
@@ -86,16 +72,16 @@ a {
   .dark input:-webkit-autofill:hover,
   .dark input:-webkit-autofill:focus,
   .dark input:-webkit-autofill:active {
-    -webkit-text-fill-color: var(--color-text-primary-dark) !important;
-    color: var(--color-text-primary-dark) !important;
-    caret-color: var(--color-text-primary-dark) !important;
+    -webkit-text-fill-color: var(--color-light) !important;
+    color: var(--color-light) !important;
+    caret-color: var(--color-light) !important;
   }
 
   input {
-    caret-color: var(--color-text-primary);
+    caret-color: var(--color-dark);
   }
 
   .dark input {
-    caret-color: var(--color-text-primary-dark);
+    caret-color: var(--color-light);
   }
 }

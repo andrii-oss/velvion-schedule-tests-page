@@ -14,7 +14,7 @@ export function Providers({ children }: ProvidersProps) {
     <ThemeProvider>
       <div className="h-full flex flex-col">
         <Header />
-        <main className="flex-1 py-[40px] px-6 h-full dark:bg-surface-dark bg-surface-light">
+        <main className="flex-1 py-[40px] px-6 h-full dark:bg-dark bg-cream">
           {children}
         </main>
         <Footer />

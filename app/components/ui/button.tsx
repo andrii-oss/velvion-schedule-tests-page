@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-accent-light text-white hover:bg-purple-900 hover:text-metal-100",
+          "bg-cyan-light text-white hover:bg-purple-900 hover:text-metal-100",
         outline:
-          "border border-accent-light text-accent-light dark:text-accent-color dark:border-accent-color bg-transparent hover:border-accent-color dark:hover:border-accent-light hover:text-accent-color dark:hover:text-accent-light",
+          "border border-cyan-light text-cyan-light dark:text-cyan dark:border-cyan bg-transparent hover:border-cyan dark:hover:border-cyan-light hover:text-cyan dark:hover:text-cyan-light",
         outlineContrast:
-          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-accent-color hover:text-black dark:hover:text-accent-light",
+          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-cyan hover:text-black dark:hover:text-cyan-light",
         secondary:
-          "bg-purple-200 dark:bg-purple-900 text-accent-light dark:text-accent-color hover:text-white dark:hover:text-white hover:bg-accent-color dark:hover:bg-accent-light",
+          "bg-purple-200 dark:bg-purple-900 text-cyan-light dark:text-cyan hover:text-white dark:hover:text-white hover:bg-cyan dark:hover:bg-cyan-light",
         ghost: "bg-transparent hover:bg-transparent",
         icon: "bg-transparent hover:bg-inherit",
         danger:

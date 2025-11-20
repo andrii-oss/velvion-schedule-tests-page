@@ -36,31 +36,17 @@ export default {
         satoshi: ["var(--font-satoshi)", "Arial", "sans-serif"],
       },
       colors: {
-        // Surface colors (backgrounds)
-        "surface-light": "#f9f9f7",
-        "surface-dark": "#2B2D2F",
-        "surface-black": "#0a0a0a",
-
-        // Text colors
-        "text-primary": "#2B2D2F",
-        "text-primary-dark": "#ededed",
-        "text-secondary": "#8898A8",
-        "text-secondary-dark": "#C3E7ED",
-        "text-muted": "#7E7E7E",
-        "text-muted-dark": "#C3E7ED",
-
-        // Border colors
-        "border-default": "#7E7E7E",
-        "border-default-dark": "#C3E7ED",
-        "border-input": "#3C3D42",
-        "border-input-dark": "#C3E7ED",
-
-        // Accent colors
-        "accent-color": "#5DC6D5",
-        "accent-light": "#C3E7ED",
-
-        // Placeholder colors
-        placeholder: "#CCCCCC",
+        // Base colors
+        cream: "#f9f9f7",
+        dark: "#2b2d2f",
+        black: "#0a0a0a",
+        light: "#ededed",
+        blue: "#8898a8",
+        gray: "#7e7e7e",
+        "dark-gray": "#3c3d42",
+        cyan: "#5dc6d5",
+        "cyan-light": "#c3e7ed",
+        placeholder: "#cccccc",
       },
       transform: {
         "translate-center": "translate(-50%, -50%)",

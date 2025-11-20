@@ -12,6 +12,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 
 export default function StartEntering() {
   const formSchema = z.object({
@@ -30,11 +31,11 @@ export default function StartEntering() {
 
   return (
     <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
-      <div className="pb-[36px] mb-[36px] border-b border-border-default dark:border-border-default-dark">
-        <h1 className="text-[32px] dark:text-accent-color text-text-primary sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
+      <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
+        <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
           Qual seu CEP?
         </h1>
-        <p className="text-[16px] sm:text-[18px] dark:text-text-secondary-dark text-text-secondary sm:leading-[36px] text-center ">
+        <p className="text-[16px] sm:text-[18px] dark:text-cyan-light text-blue sm:leading-[36px] text-center ">
           Vamos confirmar se já atendemos a sua região.
         </p>
       </div>
@@ -71,12 +72,12 @@ export default function StartEntering() {
                 </FormItem>
               )}
             />
-            <button
-              className="bg-accent-color hover:bg-transparent border-transparent border-2 hover:border-accent-color hover:border w-full hover:text-accent-color text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto"
+            <Button
+              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto"
               type="submit"
             >
               Continuar
-            </button>
+            </Button>
           </form>
         </Form>
       </div>
