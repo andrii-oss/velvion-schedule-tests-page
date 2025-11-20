@@ -9,17 +9,20 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#C3E7ED] text-white hover:bg-purple-900 hover:text-metal-100",
+        default:
+          "bg-accent-light text-white hover:bg-purple-900 hover:text-metal-100",
         outline:
-          "border border-[#C3E7ED] text-[#C3E7ED] dark:text-[#5DC6D5] dark:border-[#5DC6D5] bg-transparent hover:border-[#5DC6D5] dark:hover:border-[#C3E7ED] hover:text-[#5DC6D5] dark:hover:text-[#C3E7ED]",
+          "border border-accent-light text-accent-light dark:text-accent-color dark:border-accent-color bg-transparent hover:border-accent-color dark:hover:border-accent-light hover:text-accent-color dark:hover:text-accent-light",
         outlineContrast:
-          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-[#5DC6D5] hover:text-black dark:hover:text-[#C3E7ED]",
+          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-accent-color hover:text-black dark:hover:text-accent-light",
         secondary:
-          "bg-purple-200 dark:bg-purple-900 text-[#C3E7ED] dark:text-[#5DC6D5] hover:text-white dark:hover:text-white hover:bg-[#5DC6D5] dark:hover:bg-[#C3E7ED]",
+          "bg-purple-200 dark:bg-purple-900 text-accent-light dark:text-accent-color hover:text-white dark:hover:text-white hover:bg-accent-color dark:hover:bg-accent-light",
         ghost: "bg-transparent hover:bg-transparent",
         icon: "bg-transparent hover:bg-inherit",
-        danger: "bg-red-500 hover:bg-red-300 dark:bg-red-300 dark:hover:bg-red-500 text-white",
-        success: "bg-green-500 hover:bg-green-300 dark:bg-green-500 dark:hover:bg-green-600 text-white",
+        danger:
+          "bg-red-500 hover:bg-red-300 dark:bg-red-300 dark:hover:bg-red-500 text-white",
+        success:
+          "bg-green-500 hover:bg-green-300 dark:bg-green-500 dark:hover:bg-green-600 text-white",
       },
       size: {
         default: "h-14 text-lg",
@@ -41,7 +44,7 @@ const buttonVariants = cva(
       size: "default",
       iconSize: "default",
     },
-  },
+  }
 );
 
 export interface ButtonProps
@@ -53,8 +56,14 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, iconSize, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
-    return <Comp className={cn(buttonVariants({ variant, size, iconSize, className }))} ref={ref} {...props} />;
-  },
+    return (
+      <Comp
+        className={cn(buttonVariants({ variant, size, iconSize, className }))}
+        ref={ref}
+        {...props}
+      />
+    );
+  }
 );
 Button.displayName = "Button";
 

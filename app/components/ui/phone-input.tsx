@@ -168,11 +168,11 @@ const InputComponent = React.forwardRef<
   HTMLInputElement,
   React.ComponentProps<"input">
 >(({ className, ...props }, ref) => (
-  <div className="border-b border-[#7E7E7E] w-full ml-1">
+  <div className="border-b border-border-default w-full ml-1">
     <Input
       // dir={use18nCustomProvider()?.direction === "rtl" ? "rtl" : "ltr"}
       className={cn(
-        "h-full text-[16px] placeholder:text-[16px] bg-transparent px-1 border-none outline-none shadow-none w-full pb-[6px] placeholder:text-[#CCCCCC]",
+        "h-full text-[16px] placeholder:text-[16px] bg-transparent px-1 border-none outline-none shadow-none w-full pb-[6px] placeholder:text-placeholder",
         className
       )}
       {...props}
@@ -202,7 +202,7 @@ const CountrySelect = ({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className="border-b border-[#7E7E7E]">
+        <div className="border-b border-border-default">
           <Button
             type="button"
             variant="ghost"
@@ -225,7 +225,7 @@ const CountrySelect = ({
           </Button>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[300px] p-0 bg-[#f9f9f7]">
+      <PopoverContent className="w-[300px] p-0 bg-surface-light">
         <Command>
           <CommandInput placeholder="Search country" />
           <CommandList>

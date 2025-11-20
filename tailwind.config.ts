@@ -35,6 +35,33 @@ export default {
         sans: ["var(--font-satoshi)", "Arial", "sans-serif"],
         satoshi: ["var(--font-satoshi)", "Arial", "sans-serif"],
       },
+      colors: {
+        // Surface colors (backgrounds)
+        "surface-light": "#f9f9f7",
+        "surface-dark": "#2B2D2F",
+        "surface-black": "#0a0a0a",
+
+        // Text colors
+        "text-primary": "#2B2D2F",
+        "text-primary-dark": "#ededed",
+        "text-secondary": "#8898A8",
+        "text-secondary-dark": "#C3E7ED",
+        "text-muted": "#7E7E7E",
+        "text-muted-dark": "#C3E7ED",
+
+        // Border colors
+        "border-default": "#7E7E7E",
+        "border-default-dark": "#C3E7ED",
+        "border-input": "#3C3D42",
+        "border-input-dark": "#C3E7ED",
+
+        // Accent colors
+        "accent-color": "#5DC6D5",
+        "accent-light": "#C3E7ED",
+
+        // Placeholder colors
+        placeholder: "#CCCCCC",
+      },
       transform: {
         "translate-center": "translate(-50%, -50%)",
       },

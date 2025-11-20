@@ -36,8 +36,8 @@ export function ModeToggle() {
       iconSize="lg"
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
-      <Moon className="h-[1rem] w-[1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 smobile:h-[1.3rem] smobile:w-[1.3rem] text-[#5DC6D5]" />
-      <Sun className="absolute h-[1rem] w-[1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 smobile:h-[1.3rem] smobile:w-[1.3rem] text-[#5DC6D5]" />
+      <Moon className="h-[1rem] w-[1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 smobile:h-[1.3rem] smobile:w-[1.3rem] text-accent-color" />
+      <Sun className="absolute h-[1rem] w-[1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 smobile:h-[1.3rem] smobile:w-[1.3rem] text-accent-color" />
     </Button>
   );
 }
