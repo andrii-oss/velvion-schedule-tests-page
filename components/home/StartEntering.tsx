@@ -13,6 +13,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import axios from "axios";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 
 const formSchema = z.object({
   zipCode: z.string().regex(/^\d{8}$/, "CEP deve ter exatamente 8 dígitos"),
@@ -55,6 +57,7 @@ function handleCepBackspace(
 }
 
 export default function StartEntering() {
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,6 +66,17 @@ export default function StartEntering() {
     mode: "onChange",
   });
 
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await axios.post(`${BASE_URL}/api/v1/locations/check-availability`, {
+        cep: values.zipCode,
+      });
+
+      console.log("response", response);
+    } catch (error) {
+      console.error("Error fetching zip code:", error);
+    }
+  }
   return (
     <div className="mx-auto max-w-[528px] h-full flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
@@ -77,9 +91,7 @@ export default function StartEntering() {
       <div className="w-full mx-auto flex flex-col h-full">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit((data) => {
-              console.log("submit", data);
-            })}
+            onSubmit={form.handleSubmit(onSubmit)}
             className="flex flex-col gap-[25vh] h-full"
           >
             <FormField
@@ -104,6 +116,9 @@ export default function StartEntering() {
                       }}
                       onKeyDown={(e) => {
                         handleCepBackspace(e, field.value, field.onChange);
+                      }}
+                      onBlur={() => {
+                        form.clearErrors("zipCode");
                       }}
                     />
                   </FormControl>
