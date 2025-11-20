@@ -30,7 +30,7 @@ export default function StartEntering() {
   });
 
   return (
-    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
+    <div className="mx-auto max-w-[528px] h-full flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
         <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
           Qual seu CEP?
@@ -40,18 +40,20 @@ export default function StartEntering() {
         </p>
       </div>
 
-      <div className="w-full mx-auto flex-1 flex flex-col">
+      <div className="w-full mx-auto flex flex-col h-full">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(() => console.log("submit"))}
-            className="flex-1 flex flex-col"
+            className=" flex flex-col gap-[25vh] h-full"
           >
             <FormField
               control={form.control}
               name="zipCode"
               render={({ field }) => (
                 <FormItem className="relative mb-6">
-                  <FormLabel>CEP</FormLabel>
+                  <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
+                    CEP
+                  </FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -60,7 +62,7 @@ export default function StartEntering() {
                         const noSpaces = e.target.value.replace(/\s+/g, "");
                         field.onChange(noSpaces);
                       }}
-                      className="p-5"
+                      className="p-5 mt-2"
                     />
                   </FormControl>
                   <span>

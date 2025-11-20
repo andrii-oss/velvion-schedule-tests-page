@@ -14,6 +14,16 @@
   --color-cyan: #5dc6d5;
   --color-cyan-light: #c3e7ed;
   --color-placeholder: #cccccc;
+
+  /* Custom breakpoints */
+  --breakpoint-smobile: 395px;
+  --breakpoint-mobile: 495px;
+  --breakpoint-lmobile: 580px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-ltablet: 920px;
+  --breakpoint-laptop: 1280px;
+  --breakpoint-desktop: 1440px;
+  --breakpoint-bdesktop: 1728px;
 }
 
 html,

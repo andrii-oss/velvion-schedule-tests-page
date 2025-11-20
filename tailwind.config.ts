@@ -22,9 +22,9 @@ export default {
     extend: {
       screens: {
         // custom screens for most popular usages
-        smobile: "375px",
-        mobile: "428px",
-        lmobile: "600px",
+        smobile: "395px",
+        mobile: "495px",
+        lmobile: "580px",
         tablet: "768px",
         ltablet: "920px",
         laptop: "1280px",
