@@ -14,19 +14,53 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
+const formSchema = z.object({
+  zipCode: z.string().regex(/^\d{8}$/, "CEP deve ter exatamente 8 dígitos"),
+});
+
+type FormSchema = z.infer<typeof formSchema>;
+
+function formatCep(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 8);
+  if (digits.length >= 5) {
+    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
+  }
+  return digits;
+}
+
+function handleCepBackspace(
+  e: React.KeyboardEvent<HTMLInputElement>,
+  currentValue: string,
+  onChange: (value: string) => void
+) {
+  if (e.key === "Backspace") {
+    const input = e.currentTarget;
+    const cursorPosition = input.selectionStart || 0;
+    const formattedValue = formatCep(currentValue);
+    const digits = currentValue.replace(/\D/g, "");
+
+    if (
+      cursorPosition === 6 &&
+      formattedValue.endsWith("-") &&
+      digits.length > 0
+    ) {
+      e.preventDefault();
+      const newDigits = digits.slice(0, -1);
+      onChange(newDigits);
+      setTimeout(() => {
+        input.setSelectionRange(4, 4);
+      }, 0);
+    }
+  }
+}
+
 export default function StartEntering() {
-  const formSchema = z.object({
-    zipCode: z.string().min(5, "minimum 5 characters"),
-  });
-
-  type FormSchema = z.infer<typeof formSchema>;
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       zipCode: "",
     },
-    mode: "all",
+    mode: "onChange",
   });
 
   return (
@@ -35,7 +69,7 @@ export default function StartEntering() {
         <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
           Qual seu CEP?
         </h1>
-        <p className="text-[16px] sm:text-[18px] dark:text-cyan-light text-blue sm:leading-[36px] text-center ">
+        <p className="text-[16px] sm:text-[18px] dark:text-cyan-light text-blue sm:leading-[36px] text-center">
           Vamos confirmar se já atendemos a sua região.
         </p>
       </div>
@@ -43,8 +77,10 @@ export default function StartEntering() {
       <div className="w-full mx-auto flex flex-col h-full">
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(() => console.log("submit"))}
-            className=" flex flex-col gap-[25vh] h-full"
+            onSubmit={form.handleSubmit((data) => {
+              console.log("submit", data);
+            })}
+            className="flex flex-col gap-[25vh] h-full"
           >
             <FormField
               control={form.control}
@@ -56,26 +92,29 @@ export default function StartEntering() {
                   </FormLabel>
                   <FormControl>
                     <Input
-                      {...field}
                       placeholder="00000-000"
-                      onChange={(e) => {
-                        const noSpaces = e.target.value.replace(/\s+/g, "");
-                        field.onChange(noSpaces);
-                      }}
                       className="p-5 mt-2"
+                      value={formatCep(field.value)}
+                      onChange={(e) => {
+                        const rawValue = e.target.value
+                          .replace(/\D/g, "")
+                          .slice(0, 8);
+                        field.onChange(rawValue);
+                        form.trigger("zipCode");
+                      }}
+                      onKeyDown={(e) => {
+                        handleCepBackspace(e, field.value, field.onChange);
+                      }}
                     />
                   </FormControl>
-                  <span>
-                    <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500">
-                      {!form.formState.isValid &&
-                        form.formState.errors.zipCode?.message}
-                    </FormMessage>
-                  </span>
+                  <FormMessage className="absolute bottom-[-20px] left-0 text-red-500" />
                 </FormItem>
               )}
             />
+
             <Button
-              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto"
+              disabled={!form.formState.isValid || form.formState.isSubmitting}
+              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"
               type="submit"
             >
               Continuar
