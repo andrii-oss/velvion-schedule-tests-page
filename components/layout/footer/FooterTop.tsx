@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function FooterTop() {
   return (
-    <div className="w-full flex items-center  flex-col lmobile:flex-row flex-wrap lmobile:flex-nowrap gap-10 border-b border-cream pb-8 sm:pb-14 ">
+    <div className="w-full flex items-center lmobile:items-start flex-col lmobile:flex-row flex-wrap lmobile:flex-nowrap gap-10 border-b border-cream pb-8 sm:pb-14 ">
       <div className="w-full flex justify-center lmobile:justify-start lmobile:flex-1 lmobile:min-w-0 lmobile:max-w-[374px]">
         <Image
           src="/logo-footer.svg"
