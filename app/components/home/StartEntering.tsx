@@ -6,14 +6,16 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  FormLabel,
 } from "@/app/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { Input } from "../ui/input";
 
 export default function StartEntering() {
   const formSchema = z.object({
-    password: z.string().min(8, "minimum 8 characters"),
+    zipCode: z.string().min(5, "minimum 5 characters"),
   });
 
   type FormSchema = z.infer<typeof formSchema>;
@@ -21,20 +23,23 @@ export default function StartEntering() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      password: "",
+      zipCode: "",
     },
     mode: "all",
   });
 
   return (
-    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full bg-white dark:bg-gray-900">
-      <h1 className="text-[32px] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em]">
-        Qual seu CEP?
-      </h1>
-      <p className="text-[16px] sm:text-[18px] sm:leading-[36px] text-center mb-[30px]">
-        Vamos confirmar se já atendemos a sua região.
-      </p>
-      <div className="max-w-[425px] w-full mx-auto flex-1 flex flex-col">
+    <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
+      <div className="pb-[36px] mb-[36px] border-b border-[#7E7E7E]">
+        <h1 className="text-[32px] dark:text-[#5DC6D5] text-[#2B2D2F] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
+          Qual seu CEP?
+        </h1>
+        <p className="text-[16px] sm:text-[18px] dark:text-[#C3E7ED] text-[#8898A8] sm:leading-[36px] text-center ">
+          Vamos confirmar se já atendemos a sua região.
+        </p>
+      </div>
+
+      <div className="w-full mx-auto flex-1 flex flex-col">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(() => console.log("submit"))}
@@ -42,24 +47,24 @@ export default function StartEntering() {
           >
             <FormField
               control={form.control}
-              name="password"
+              name="zipCode"
               render={({ field }) => (
                 <FormItem className="relative mb-6">
+                  <FormLabel>CEP</FormLabel>
                   <FormControl>
-                    <input
+                    <Input
                       {...field}
-                      placeholder="Enter your postal code (CEP)"
+                      placeholder="00000-000"
                       onChange={(e) => {
                         const noSpaces = e.target.value.replace(/\s+/g, "");
                         field.onChange(noSpaces);
                       }}
-                      className="w-full outline-none h-[28px] pb-[6px] border-b border-[#7E7E7E] placeholder:text-[#CCCCCC]"
                     />
                   </FormControl>
                   <span>
-                    <FormMessage className="absolute bottom-[-15px] left-0 z-1 ">
+                    <FormMessage className="absolute bottom-[-15px] left-0 z-1 text-red-500">
                       {!form.formState.isValid &&
-                        form.formState.errors.password?.message}
+                        form.formState.errors.zipCode?.message}
                     </FormMessage>
                   </span>
                 </FormItem>
