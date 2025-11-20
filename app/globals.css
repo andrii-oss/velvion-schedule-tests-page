@@ -10,12 +10,11 @@
   --accent-color: #5ec5d5;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --accent-color: #5ec5d5;
+}
 
 html,
 body {
@@ -37,10 +36,8 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.dark {
+  color-scheme: dark;
 }
 
 @layer utilities {
@@ -65,14 +62,14 @@ a {
   input:-webkit-autofill:active {
     -webkit-box-shadow: 0 0 0 30px transparent inset !important;
     box-shadow: 0 0 0 30px transparent inset !important;
-    -webkit-text-fill-color: #2b2d2f !important;
-    color: #2b2d2f !important;
+    -webkit-text-fill-color: var(--foreground) !important;
+    color: var(--foreground) !important;
     background-color: transparent !important;
-    caret-color: #2b2d2f !important;
+    caret-color: var(--foreground) !important;
     transition: background-color 5000s ease-in-out 0s;
   }
 
   input {
-    caret-color: #2b2d2f;
+    caret-color: var(--foreground);
   }
 }
