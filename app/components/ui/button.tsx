@@ -9,13 +9,13 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-purple-600 text-white hover:bg-purple-900 hover:text-metal-100",
+        default: "bg-[#C3E7ED] text-white hover:bg-purple-900 hover:text-metal-100",
         outline:
-          "border border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400 bg-transparent hover:border-purple-400 dark:hover:border-purple-600 hover:text-purple-400 dark:hover:text-purple-600",
+          "border border-[#C3E7ED] text-[#C3E7ED] dark:text-[#5DC6D5] dark:border-[#5DC6D5] bg-transparent hover:border-[#5DC6D5] dark:hover:border-[#C3E7ED] hover:text-[#5DC6D5] dark:hover:text-[#C3E7ED]",
         outlineContrast:
-          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-purple-400 hover:text-black dark:hover:text-purple-200",
+          "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-[#5DC6D5] hover:text-black dark:hover:text-[#C3E7ED]",
         secondary:
-          "bg-purple-200 dark:bg-purple-900 text-purple-600 dark:text-purple-400 hover:text-white dark:hover:text-white hover:bg-purple-400 dark:hover:bg-purple-600",
+          "bg-purple-200 dark:bg-purple-900 text-[#C3E7ED] dark:text-[#5DC6D5] hover:text-white dark:hover:text-white hover:bg-[#5DC6D5] dark:hover:bg-[#C3E7ED]",
         ghost: "bg-transparent hover:bg-transparent",
         icon: "bg-transparent hover:bg-inherit",
         danger: "bg-red-500 hover:bg-red-300 dark:bg-red-300 dark:hover:bg-red-500 text-white",

@@ -30,7 +30,7 @@ export default function StartEntering() {
 
   return (
     <div className="mx-auto max-w-[528px] flex-1 flex flex-col w-full">
-      <div className="pb-[36px] mb-[36px] border-b border-[#7E7E7E]">
+      <div className="pb-[36px] mb-[36px] border-b border-[#7E7E7E] dark:border-[#C3E7ED]">
         <h1 className="text-[32px] dark:text-[#5DC6D5] text-[#2B2D2F] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
           Qual seu CEP?
         </h1>
@@ -59,6 +59,7 @@ export default function StartEntering() {
                         const noSpaces = e.target.value.replace(/\s+/g, "");
                         field.onChange(noSpaces);
                       }}
+                      className="p-5"
                     />
                   </FormControl>
                   <span>
