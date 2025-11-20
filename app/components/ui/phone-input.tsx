@@ -30,12 +30,24 @@ type PhoneInputProps = Omit<
 
 const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
   React.forwardRef<React.ElementRef<typeof RPNInput.default>, PhoneInputProps>(
-    ({ className, onChange, ...props }, ref) => {
+    ({ className, onChange, value: propsValue, ...props }, ref) => {
       // Use a consistent default for SSR to prevent hydration mismatch
       const [defaultCountry, setDefaultCountry] = React.useState<Country>("GB");
       const [selectedCountry, setSelectedCountry] = React.useState<
         RPNInput.Country | undefined
       >("GB");
+      const [currentValue, setCurrentValue] = React.useState<
+        RPNInput.Value | undefined
+      >(
+        (propsValue as RPNInput.Value) ||
+          (props.defaultValue as RPNInput.Value) ||
+          undefined
+      );
+      const previousCountryRef = React.useRef<RPNInput.Country | undefined>(
+        "GB"
+      );
+      const shouldClearAndSetCodeRef = React.useRef(false);
+      const pendingCountryCodeRef = React.useRef<RPNInput.Value | null>(null);
 
       // Only detect timezone on client after hydration
       React.useEffect(() => {
@@ -49,12 +61,64 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
             ?.countries?.[0] as Country) || "GB") as Country;
           setDefaultCountry(detectedCountry);
           setSelectedCountry(detectedCountry);
+          previousCountryRef.current = detectedCountry;
         } catch {
           // Fallback to GB if timezone detection fails
           setDefaultCountry("GB");
           setSelectedCountry("GB");
+          previousCountryRef.current = "GB";
         }
       }, []);
+
+      // Sync with external value changes
+      React.useEffect(() => {
+        if (propsValue !== undefined) {
+          setCurrentValue(propsValue as RPNInput.Value);
+        }
+      }, [propsValue]);
+
+      // Встановлюємо код країни після зміни, якщо потрібно очистити поле
+      React.useEffect(() => {
+        if (shouldClearAndSetCodeRef.current && pendingCountryCodeRef.current) {
+          // Використовуємо requestAnimationFrame для того, щоб компонент встиг оновитися
+          requestAnimationFrame(() => {
+            setCurrentValue(pendingCountryCodeRef.current!);
+            onChange?.(pendingCountryCodeRef.current!);
+            shouldClearAndSetCodeRef.current = false;
+            pendingCountryCodeRef.current = null;
+          });
+        }
+      }, [selectedCountry, onChange]);
+
+      const handleCountryChange = React.useCallback(
+        (country: RPNInput.Country | undefined) => {
+          if (!country) return;
+
+          const hasInputValue =
+            currentValue &&
+            typeof currentValue === "string" &&
+            currentValue.trim() !== "" &&
+            currentValue.trim() !== "+";
+
+          // Якщо інпут не пустий і країна змінилася
+          if (
+            hasInputValue &&
+            previousCountryRef.current &&
+            previousCountryRef.current !== country
+          ) {
+            // Встановлюємо код нової країни
+            const countryCode = `+${RPNInput.getCountryCallingCode(
+              country
+            )}` as RPNInput.Value;
+            shouldClearAndSetCodeRef.current = true;
+            pendingCountryCodeRef.current = countryCode;
+          }
+
+          setSelectedCountry(country);
+          previousCountryRef.current = country;
+        },
+        [currentValue]
+      );
 
       return (
         <RPNInput.default
@@ -64,12 +128,10 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}
           smartCaret={true}
+          country={selectedCountry || defaultCountry}
           defaultCountry={selectedCountry || defaultCountry}
-          onCountryChange={(country) => {
-            if (setSelectedCountry && country) {
-              setSelectedCountry(country);
-            }
-          }}
+          value={currentValue}
+          onCountryChange={handleCountryChange}
           /**
            * Handles the onChange event.
            *
@@ -79,7 +141,11 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
            *
            * @param {E164Number | undefined} value - The entered value
            */
-          onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
+          onChange={(value) => {
+            const newValue = value || ("" as RPNInput.Value);
+            setCurrentValue(newValue);
+            onChange?.(newValue);
+          }}
           {...props}
         />
       );
@@ -137,9 +203,13 @@ const CountrySelect = ({
               countryName={selectedCountry}
             />
             {open ? (
-              <ChevronUp style={{ width: "14px", height: "14px", opacity: 0.6 }} />
+              <ChevronUp
+                style={{ width: "14px", height: "14px", opacity: 0.6 }}
+              />
             ) : (
-              <ChevronDown style={{ width: "14px", height: "14px", opacity: 0.6 }} />
+              <ChevronDown
+                style={{ width: "14px", height: "14px", opacity: 0.6 }}
+              />
             )}
           </Button>
         </div>
@@ -183,7 +253,10 @@ const CountrySelectOption = ({
   onChange,
 }: CountrySelectOptionProps) => {
   return (
-    <CommandItem className="gap-2 cursor-pointer hover:bg-gray-200" onSelect={() => onChange(country)}>
+    <CommandItem
+      className="gap-2 cursor-pointer hover:bg-gray-200"
+      onSelect={() => onChange(country)}
+    >
       <FlagComponent country={country} countryName={countryName} />
       <span className="flex-1 text-sm">{countryName}</span>
       <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(
