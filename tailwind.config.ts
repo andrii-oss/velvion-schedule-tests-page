@@ -46,6 +46,7 @@ export default {
         "dark-gray": "#3c3d42",
         cyan: "#5dc6d5",
         "cyan-light": "#c3e7ed",
+        neutral: "#B2BCC7",
         placeholder: "#cccccc",
       },
       transform: {

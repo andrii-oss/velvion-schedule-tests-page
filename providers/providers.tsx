@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import { ThemeProvider } from "./theme-provider";
 import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import Footer from "@/components/layout/footer/Footer";
 
 interface ProvidersProps {
   children: ReactNode;

@@ -66,7 +66,7 @@ export default function StartEntering() {
                     />
                   </FormControl>
                   <span>
-                    <FormMessage className="absolute bottom-[-15px] left-0 z-1 text-red-500">
+                    <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500">
                       {!form.formState.isValid &&
                         form.formState.errors.zipCode?.message}
                     </FormMessage>
