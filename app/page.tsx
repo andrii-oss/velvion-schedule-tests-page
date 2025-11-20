@@ -1,7 +1,5 @@
-import StartEntering from "./components/home/StartEntering";
-import NoServeArea from "./components/home/no-find-area/NoServeArea";
-import ComeBackLater from "./components/home/no-find-area/ComeBackLater";
-import AddToWaitingListForm from "./components/home/no-find-area/AddToWaitingListForm";
+import StartEntering from "@/components/home/StartEntering";
+
 
 export default function Home() {
   return (

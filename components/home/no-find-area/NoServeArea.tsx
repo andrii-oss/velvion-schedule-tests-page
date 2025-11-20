@@ -2,7 +2,7 @@ export default function NoServeArea() {
   return (
     <div className="mx-auto max-w-[528px]">
       <h1 className="text-[32px] sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-medium">
-        We don’t serve your area yet
+        We don&apos;t serve your area yet
       </h1>
       <p className="text-[16px] sm:text-[18px] sm:leading-[24px] text-center mb-[30px] ">
         Your CEP (zip code) is outside our current coverage. <br /> Would you

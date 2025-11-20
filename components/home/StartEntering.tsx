@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
   FormLabel,
-} from "@/app/components/ui/form";
+} from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

@@ -8,7 +8,7 @@ import {
   FormItem,
   FormMessage,
   FormLabel,
-} from "@/app/components/ui/form";
+} from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -120,7 +120,7 @@ export default function AddToWaitingListForm() {
                       What is your WhatsApp number?
                     </FormLabel>
                     <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-gray">
-                      We'll notify you here.
+                      We&apos;ll notify you here.
                     </FormLabel>
                   </div>
 
@@ -154,7 +154,7 @@ export default function AddToWaitingListForm() {
                       What is your e-mail?
                     </FormLabel>
                     <FormLabel className="text-[18px] sm:leading-[36px] sm:h-[26px] text-gray">
-                      We'll send you a confirmation.
+                      We&apos;ll send you a confirmation.
                     </FormLabel>
                   </div>
 
