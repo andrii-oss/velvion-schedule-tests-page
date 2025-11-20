@@ -31,14 +31,12 @@ export default {
         bdesktop: "1728px",
       },
       fontFamily: {
-        // geistSans: ["var(--font-geist-sans)"],
-        // geistMono: ["var(--font-geist-mono)"],
-        // firaSans: ["var(--font-fira-sans)"],
+        sans: ["var(--font-satoshi)", "Arial", "sans-serif"],
+        satoshi: ["var(--font-satoshi)", "Arial", "sans-serif"],
       },
       transform: {
         "translate-center": "translate(-50%, -50%)",
       },
-      colors: {},
       borderRadius: {},
     },
   },
