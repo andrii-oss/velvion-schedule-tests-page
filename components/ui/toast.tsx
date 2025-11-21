@@ -26,7 +26,7 @@ const ToastViewport = React.forwardRef<
 ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
-  "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-[8px] p-4 pr-6 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full",
+  "group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-[8px] p-4 pr-6 shadow-lg data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
   {
     variants: {
       variant: {
@@ -45,10 +45,46 @@ const Toast = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
     VariantProps<typeof toastVariants>
 >(({ className, variant, ...props }, ref) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const toastRef = React.useRef<React.ElementRef<typeof ToastPrimitives.Root>>(null);
+
+  React.useEffect(() => {
+    const element = toastRef.current;
+    if (!element) return;
+
+    const observer = new MutationObserver(() => {
+      const state = element.getAttribute("data-state");
+      setIsOpen(state === "open");
+    });
+
+    observer.observe(element, {
+      attributes: true,
+      attributeFilter: ["data-state"],
+    });
+
+    // Initial state
+    const initialState = element.getAttribute("data-state");
+    setIsOpen(initialState === "open");
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <ToastPrimitives.Root
-      ref={ref}
+      ref={(node) => {
+        if (typeof ref === "function") {
+          ref(node);
+        } else if (ref) {
+          ref.current = node;
+        }
+        toastRef.current = node;
+      }}
       className={cn(toastVariants({ variant }), className)}
+      style={{
+        transition: "transform 0.3s ease-in-out, opacity 0.3s ease-in-out",
+        transform: isOpen ? "translateX(0)" : "translateX(100%)",
+        opacity: isOpen ? 1 : 0,
+      }}
       {...props}
     />
   );
@@ -83,8 +119,8 @@ const ToastClose = React.forwardRef<
   <ToastPrimitives.Close
     ref={ref}
     className={cn(
-      "absolute right-1 top-1 rounded-md p-1 text-cyan-light opacity-0 transition-opacity hover:text-cyan-light hover:bg-cyan-light/10",
-      "focus:opacity-100 focus:outline-none focus:ring-1 focus:ring-cyan-light/20 group-hover:opacity-100",
+      "absolute right-1 top-1/2 -translate-y-1/2 rounded-md p-1 text-cyan-light opacity-100 transition-opacity hover:text-cyan-light hover:bg-cyan-light/10",
+      "focus:outline-none focus:ring-1 focus:ring-cyan-light/20",
       className
     )}
     toast-close=""

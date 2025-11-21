@@ -11,12 +11,22 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { useAvailabilityStore } from "@/store/availability-store";
 import { useToast } from "@/hooks/use-toast";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
+
+export interface CepResponse {
+  available: boolean;
+  cep: string;
+  city: string;
+  message: string;
+  region: string;
+  waiting_list_url: string | null;
+}
 
 const formSchema = z.object({
   zipCode: z.string().regex(/^\d{8}$/, "CEP deve ter exatamente 8 dígitos"),
@@ -63,6 +73,8 @@ export default function StartEntering() {
   const setAvailability = useAvailabilityStore(
     (state) => state.setAvailability
   );
+  const setCepResponse = useAvailabilityStore((state) => state.setCepResponse);
+  const cepResponse = useAvailabilityStore((state) => state.cepResponse);
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -71,23 +83,33 @@ export default function StartEntering() {
     mode: "onChange",
   });
 
+  useEffect(() => {
+    if (cepResponse?.waiting_list_url) {
+      setTimeout(() => {
+        if (cepResponse.waiting_list_url) {
+          window.location.href = cepResponse.waiting_list_url;
+        }
+      }, 2000);
+    }
+  }, [cepResponse?.waiting_list_url]);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post(
+      const response = await axios.post<CepResponse>(
         `${BASE_URL}/api/v1/locations/check-availability`,
         {
           cep: values.zipCode, //test success 09090909
         }
       );
-
-      console.log("response", response);
-
-      const isAvailable = response.data?.available === true;
+      const responseData: CepResponse = response.data;
+      const isAvailable = responseData.available === true;
 
       toast({
         status: isAvailable ? "success" : "error",
-        title: response.data?.message,
+        title: responseData.message,
       });
+
+      setCepResponse(responseData);
 
       // Set availability based on API response
       if (isAvailable) {

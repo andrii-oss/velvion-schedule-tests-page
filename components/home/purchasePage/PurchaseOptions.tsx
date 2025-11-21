@@ -24,7 +24,7 @@ export default function PurchaseOptions() {
   const [selectedOption, setSelectedOption] = useState<string>("1");
   const [promoCode, setPromoCode] = useState<string>("");
 
-  const handlePromoCodeSubmit = () => {
+  const sendPromoCode = async () => {
     if (!promoCode.trim()) return;
     // Тут можна додати логіку валідації та застосування промокоду
     console.log("Promo code:", promoCode);
@@ -32,7 +32,7 @@ export default function PurchaseOptions() {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      handlePromoCodeSubmit();
+      sendPromoCode();
     }
   };
   return (
@@ -107,7 +107,7 @@ export default function PurchaseOptions() {
         />
         <Button
           type="button"
-          onClick={handlePromoCodeSubmit}
+          onClick={sendPromoCode}
           variant="outline"
           disabled={!promoCode.trim()}
           className="smobile:w-auto w-full h-[60px] border-2 hover:text-white"
