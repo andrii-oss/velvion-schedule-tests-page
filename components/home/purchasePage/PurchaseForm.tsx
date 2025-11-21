@@ -22,9 +22,6 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-
-
-
 export default function PurchaseForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -36,12 +33,9 @@ export default function PurchaseForm() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post(
-        `${BASE_URL}/api/v1/`,
-        {
-          cep: values.coupon,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/api/v1/`, {
+        cep: values.coupon,
+      });
 
       console.log("response", response);
     } catch (error) {
@@ -67,7 +61,7 @@ export default function PurchaseForm() {
             render={({ field }) => (
               <FormItem className="relative mb-6">
                 <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
-                CPF
+                  CPF
                 </FormLabel>
                 <FormControl>
                   <Input
