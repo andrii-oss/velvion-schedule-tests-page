@@ -17,50 +17,19 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 
 const formSchema = z.object({
-  zipCode: z.string().regex(/^\d{8}$/, "CEP deve ter exatamente 8 dígitos"),
+  coupon: z.string(),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
-function formatCep(value: string): string {
-  const digits = value.replace(/\D/g, "").slice(0, 8);
-  if (digits.length >= 5) {
-    return `${digits.slice(0, 5)}-${digits.slice(5)}`;
-  }
-  return digits;
-}
 
-function handleCepBackspace(
-  e: React.KeyboardEvent<HTMLInputElement>,
-  currentValue: string,
-  onChange: (value: string) => void
-) {
-  if (e.key === "Backspace") {
-    const input = e.currentTarget;
-    const cursorPosition = input.selectionStart || 0;
-    const formattedValue = formatCep(currentValue);
-    const digits = currentValue.replace(/\D/g, "");
 
-    if (
-      cursorPosition === 6 &&
-      formattedValue.endsWith("-") &&
-      digits.length > 0
-    ) {
-      e.preventDefault();
-      const newDigits = digits.slice(0, -1);
-      onChange(newDigits);
-      setTimeout(() => {
-        input.setSelectionRange(4, 4);
-      }, 0);
-    }
-  }
-}
 
 export default function PurchaseForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      zipCode: "",
+      coupon: "",
     },
     mode: "onChange",
   });
@@ -68,9 +37,9 @@ export default function PurchaseForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post(
-        `${BASE_URL}/api/v1/locations/check-availability`,
+        `${BASE_URL}/api/v1/`,
         {
-          cep: values.zipCode,
+          cep: values.coupon,
         }
       );
 
@@ -80,38 +49,31 @@ export default function PurchaseForm() {
     }
   };
   return (
-    <div className="w-full mx-auto flex flex-col h-full border-t border-gray dark:border-cyan-light pt-[36px]">
+    <section className="w-full mx-auto flex flex-col border-t border-gray dark:border-cyan-light pt-[36px]">
+      <div className="mb-6">
+        <h2 className="text-dark dark:text-cyan-light text-2xl font-helvetica-neue font-medium mb-3">
+          Seus Dados
+        </h2>
+        <p className="text-blue text-[16px] font-medium">
+          Usaremos só para criar sua conta, emitir comprovantes e nota fiscal.
+        </p>
+      </div>
+
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col h-full"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
           <FormField
             control={form.control}
-            name="zipCode"
+            name="coupon"
             render={({ field }) => (
               <FormItem className="relative mb-6">
                 <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
-                  CEP
+                CPF
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="00000-000"
+                    placeholder="Cupom de desconto"
                     className="p-5 mt-2"
-                    value={formatCep(field.value)}
-                    onChange={(e) => {
-                      const rawValue = e.target.value
-                        .replace(/\D/g, "")
-                        .slice(0, 8);
-                      field.onChange(rawValue);
-                      form.trigger("zipCode");
-                    }}
-                    onKeyDown={(e) => {
-                      handleCepBackspace(e, field.value, field.onChange);
-                    }}
-                    onBlur={() => {
-                      form.clearErrors("zipCode");
-                    }}
+                    {...field}
                   />
                 </FormControl>
                 <FormMessage className="absolute bottom-[-20px] left-0 text-red-500" />
@@ -128,6 +90,6 @@ export default function PurchaseForm() {
           </Button>
         </form>
       </Form>
-    </div>
+    </section>
   );
 }

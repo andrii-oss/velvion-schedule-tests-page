@@ -11,7 +11,7 @@ export default function PurchaseBenefits() {
   ];
   return (
     <section className="py-[36px] mb-[36px] bg-cyan-light rounded-lg p-6">
-      <h2 className="text-dark  text-2xl font-helvetica-neue font-medium mb-3">
+      <h2 className="text-dark  text-2xl font-helvetica-neue font-medium mb-6">
         A Velvion inclui:
       </h2>
       <ul className="list-disc list-inside">

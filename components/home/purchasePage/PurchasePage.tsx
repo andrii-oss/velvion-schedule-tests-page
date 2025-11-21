@@ -1,11 +1,10 @@
-
 import PurchaseOptions from "./PurchaseOptions";
 import PurchaseBenefits from "./PurchaseBenefits";
 import PurchaseForm from "./PurchaseForm";
 
 export default function PurchasePage() {
   return (
-    <div className="mx-auto max-w-[600px] h-full flex flex-col w-full">
+    <div className="mx-auto max-w-[600px] flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
         <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[36px] text-center mb-4 tracking-[-0.01em] font-helvetica-neue font-semibold">
           Ótimo, sua região é atendida.
