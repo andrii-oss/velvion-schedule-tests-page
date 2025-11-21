@@ -56,8 +56,7 @@ button {
 @layer utilities {
   .font-helvetica-neue
   /* .font-helvetica-neue-cyr,
-  .font-helvetica-neue-black-condensed  */
-  {
+  .font-helvetica-neue-black-condensed  */ {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif !important;
   }
 

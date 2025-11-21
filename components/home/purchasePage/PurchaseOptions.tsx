@@ -21,50 +21,64 @@ const optionsList = [
 export default function PurchaseOptions() {
   const [selectedOption, setSelectedOption] = useState<string>("1");
   return (
-    <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
-      <h2 className="text-dark dark:text-cyan-light text-2xl font-helvetica-neue font-semibold mb-3">
+    <section className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
+      <h2
+        id="payment-options-heading"
+        className="text-dark dark:text-cyan-light text-2xl font-helvetica-neue font-semibold mb-3"
+      >
         Escolha uma opção
       </h2>
       <p className="text-blue text-[16px] font-medium">
         Selecione a forma de pagamento que preferir.
       </p>
-      <div className="flex flex-col lmobile:flex-row justify-between gap-5 mt-6">
+      <div
+        role="radiogroup"
+        aria-labelledby="payment-options-heading"
+        className="flex flex-col lmobile:flex-row justify-between gap-5 mt-6"
+      >
         {optionsList.map((option) => (
           <button
+            type="button"
+            role="radio"
+            aria-checked={selectedOption === option.id}
             onClick={() => setSelectedOption(option.id)}
             key={option.id}
             className={cn(
-              "flex flex-1 flex-col gap-1 border  border-gray dark:border-cyan-light rounded-lg p-4 max-h-[132px] text-left",
-              selectedOption === option.id ? "border-cyan bg-cyan-light" : "hover:border-cyan/30 hover:bg-cyan-light/30 dark:hover:bg-cyan-light/10 transition-all duration-300 ease-out"
+              "flex flex-1 flex-col gap-1 border border-gray dark:border-cyan-light rounded-lg p-4 max-h-[132px] text-left",
+              selectedOption === option.id
+                ? "border-cyan bg-cyan-light"
+                : "hover:border-cyan/30 hover:bg-cyan-light/30 dark:hover:bg-cyan-light/10 transition-all duration-300 ease-out"
             )}
           >
-            <h3
+            <span
               className={cn(
-                " text-base font-medium ",
+                "text-base font-medium",
                 selectedOption === option.id ? "text-light-dark" : "text-blue"
               )}
             >
               {option.title}
-            </h3>
-            <p
+            </span>
+            <span
               className={cn(
-                " text-[28px] font-bold ",
-                selectedOption === option.id ? "text-dark" : "dark:text-cyan-light"
+                "text-[28px] font-bold",
+                selectedOption === option.id
+                  ? "text-dark"
+                  : "dark:text-cyan-light"
               )}
             >
               {option.price}
-            </p>
-            <p
+            </span>
+            <span
               className={cn(
-                "text-base font-medium ",
+                "text-base font-medium",
                 selectedOption === option.id ? "text-light-dark" : "text-blue"
               )}
             >
               {option.methods}
-            </p>
+            </span>
           </button>
         ))}
       </div>
-    </div>
+    </section>
   );
 }
