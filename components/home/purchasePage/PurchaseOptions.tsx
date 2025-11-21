@@ -2,6 +2,8 @@
 
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const optionsList = [
   {
@@ -20,6 +22,19 @@ const optionsList = [
 
 export default function PurchaseOptions() {
   const [selectedOption, setSelectedOption] = useState<string>("1");
+  const [promoCode, setPromoCode] = useState<string>("");
+
+  const handlePromoCodeSubmit = () => {
+    if (!promoCode.trim()) return;
+    // Тут можна додати логіку валідації та застосування промокоду
+    console.log("Promo code:", promoCode);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      handlePromoCodeSubmit();
+    }
+  };
   return (
     <section className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
       <h2
@@ -78,6 +93,27 @@ export default function PurchaseOptions() {
             </span>
           </button>
         ))}
+      </div>
+
+      <div className="flex flex-col smobile:flex-row gap-3 mt-6">
+        <Input
+          type="text"
+          placeholder="Cupom de desconto"
+          value={promoCode}
+          onChange={(e) => setPromoCode(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className="flex-1 border-cyan h-[60px] dark:border-cyan border-2"
+          aria-label="Cupom de desconto"
+        />
+        <Button
+          type="button"
+          onClick={handlePromoCodeSubmit}
+          variant="outline"
+          disabled={!promoCode.trim()}
+          className="smobile:w-auto w-full h-[60px] border-2 hover:text-white"
+        >
+          Aplicar
+        </Button>
       </div>
     </section>
   );

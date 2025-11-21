@@ -12,7 +12,7 @@ const buttonVariants = cva(
         default:
           "bg-cyan-light text-white hover:bg-purple-900 hover:text-metal-100",
         outline:
-          "border border-cyan-light text-cyan-light dark:text-cyan dark:border-cyan bg-transparent hover:border-cyan dark:hover:border-cyan-light hover:text-cyan dark:hover:text-cyan-light",
+          "border border-cyan text-cyan bg-transparent hover:bg-cyan hover:text-white dark:hover:text-cyan-light hover:text-cyan-light",
         outlineContrast:
           "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-cyan hover:text-black dark:hover:text-cyan-light",
         secondary:
