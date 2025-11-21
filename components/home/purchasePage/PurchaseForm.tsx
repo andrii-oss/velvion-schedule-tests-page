@@ -11,30 +11,77 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Link from "next/link";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
 import axios from "axios";
+import { isValidPhoneNumber } from "react-phone-number-input";
+import { Checkbox } from "@/components/ui/checkbox";
+
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
+
+function formatBrazilPhone(value: string) {
+  const digits = value.replace(/\D/g, "");
+
+  // <-- IMPORTANT: if nothing is entered, return ""
+  if (digits.length === 0) return "";
+
+  if (digits.length <= 2) {
+    return `(${digits}`;
+  }
+
+  if (digits.length <= 7) {
+    return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
+  }
+
+  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7, 11)}`;
+}
 
 const formSchema = z.object({
   coupon: z.string(),
+  fullName: z.string().min(2, "mínimo 2 caracteres"),
+  phoneNumber: z
+    .string()
+    .min(11, "Número de telefone inválido")
+    .refine(
+      (value) => {
+        const e164 = "+55" + value.replace(/\D/g, "");
+        return isValidPhoneNumber(e164);
+      },
+      { message: "Número de telefone inválido" }
+    ),
+  email: z
+    .string()
+    .min(1, "E-mail obrigatório")
+    .email({ message: "E-mail inválido" }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function PurchaseForm() {
+  const [isChecked, setIsChecked] = useState(false);
+
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       coupon: "",
+      fullName: "",
+      email: "",
+      phoneNumber: "",
     },
-    mode: "onChange",
+    mode: "all",
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const toggleSelection = () => {
+    setIsChecked((prev) => !prev);
+  };
+
+  const onSubmit = async (values: FormSchema) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/`, {
         cep: values.coupon,
+        phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Надсилання у форматі E.164
       });
 
       console.log("response", response);
@@ -42,6 +89,7 @@ export default function PurchaseForm() {
       console.error("Error fetching zip code:", error);
     }
   };
+
   return (
     <section className="w-full mx-auto flex flex-col border-t border-gray dark:border-cyan-light pt-[36px]">
       <div className="mb-6">
@@ -55,6 +103,7 @@ export default function PurchaseForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
+          {/* Coupon */}
           <FormField
             control={form.control}
             name="coupon"
@@ -75,6 +124,118 @@ export default function PurchaseForm() {
             )}
           />
 
+          {/* Full Name */}
+          <FormField
+            control={form.control}
+            name="fullName"
+            render={({ field }) => (
+              <FormItem className="relative mb-6">
+                <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
+                  Nome Completo
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="Seu nome completo"
+                    className="p-5 mt-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="absolute bottom-[-15px] left-0 z-1 ">
+                  {form.formState.errors.fullName?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+
+          {/* Email */}
+          <FormField
+            control={form.control}
+            name="email"
+            render={({ field }) => (
+              <FormItem className="relative mb-6">
+                <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
+                  E-mail
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="email@exemplo.com"
+                    className="p-5 mt-2"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500">
+                  {form.formState.errors.email?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+
+          {/* Phone Number */}
+          <FormField
+            control={form.control}
+            name="phoneNumber"
+            render={({ field }) => (
+              <FormItem className="relative mb-6">
+                <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
+                  Telefone (WhatsApp)
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="tel"
+                    placeholder="(00) 90000-0000"
+                    className="p-5 mt-2"
+                    value={formatBrazilPhone(field.value)}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, "");
+                      field.onChange(digits);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500">
+                  {form.formState.errors.phoneNumber?.message}
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center gap-2 mb-13">
+            <Checkbox
+              checked={isChecked}
+              onCheckedChange={(checked) => setIsChecked(checked === true)}
+            />
+            <label
+              htmlFor="terms"
+              className="text-sm text-blue dark:text-cyan-light cursor-pointer"
+              onClick={toggleSelection}
+            >
+              Li e concordo com os{" "}
+              <Link
+                href="/"
+                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors "
+                onClick={(e) => e.stopPropagation()}
+              >
+                Termos de Uso
+              </Link>
+              ,{" "}
+              <Link
+                href="/"
+                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Política de Privacidade
+              </Link>{" "}
+              e{" "}
+              <Link
+                href="/"
+                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                Consentimento LGPD
+              </Link>
+              .
+            </label>
+          </div>
+
+          {/* Submit */}
           <Button
             disabled={!form.formState.isValid || form.formState.isSubmitting}
             className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"

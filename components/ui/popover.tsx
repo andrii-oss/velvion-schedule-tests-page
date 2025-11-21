@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { cn } from "@/lib/utils";
-import { useMediaQuery } from "@/app/hooks/use-media-query";
+import { useMediaQuery } from "../../hooks/use-media-query";
 
 const Popover = PopoverPrimitive.Root;
 
