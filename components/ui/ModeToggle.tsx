@@ -17,7 +17,7 @@ export function ModeToggle() {
     return (
       <Button
         className="h-[40px] border-0 p-2 smobile:p-2.5 absolute right-6 top-10"
-        variant="outline"
+        variant="ghost"
         iconSize="lg"
         disabled
       >
@@ -32,12 +32,12 @@ export function ModeToggle() {
   return (
     <Button
       className="h-[40px] border-0 p-2 smobile:p-2.5  absolute right-6 top-10"
-      variant="outline"
+      variant="ghost"
       iconSize="lg"
       onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       <Moon className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 smobile:h-[1.3rem] smobile:w-[1.3rem] text-cyan" />
-      <Sun className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 smobile:h-[1.3rem] smobile:w-[1.3rem] text-cyan" />
+      <Sun className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 smobile:h-[1.3rem] smobile:w-[1.3rem] text-cyan " />
     </Button>
   );
 }

@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-cyan-light text-white hover:bg-purple-900 hover:text-metal-100",
+          "bg-cyan-light text-white hover:bg-cyan hover:text-metal-100",
         outline:
           "border border-cyan text-cyan bg-transparent hover:bg-cyan hover:text-white dark:hover:text-cyan-light hover:text-cyan-light",
         outlineContrast:
           "border border-black text-black dark:text-white dark:border-metal-300 bg-transparent hover:border-metal-600 dark:hover:border-cyan hover:text-black dark:hover:text-cyan-light",
         secondary:
-          "bg-purple-200 dark:bg-purple-900 text-cyan-light dark:text-cyan hover:text-white dark:hover:text-white hover:bg-cyan dark:hover:bg-cyan-light",
+          "bg-cyan-light dark:bg-cyan text-cyan-light dark:text-cyan hover:text-white dark:hover:text-white hover:bg-cyan dark:hover:bg-cyan-light",
         ghost: "bg-transparent hover:bg-transparent",
         icon: "bg-transparent hover:bg-inherit",
         danger:
