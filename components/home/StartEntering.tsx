@@ -14,6 +14,8 @@ import { useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { useAvailabilityStore } from "@/store/availability-store";
+import { useToast } from "@/hooks/use-toast";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 
 const formSchema = z.object({
@@ -57,6 +59,10 @@ function handleCepBackspace(
 }
 
 export default function StartEntering() {
+  const { toast } = useToast();
+  const setAvailability = useAvailabilityStore(
+    (state) => state.setAvailability
+  );
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -67,6 +73,10 @@ export default function StartEntering() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      if (!BASE_URL) {
+        throw new Error("BASE_URL não configurado");
+      }
+
       const response = await axios.post(
         `${BASE_URL}/api/v1/locations/check-availability`,
         {
@@ -75,14 +85,41 @@ export default function StartEntering() {
       );
 
       console.log("response", response);
+
+      const isAvailable = response.data?.available === true;
+
+      toast({
+        status: isAvailable ? "success" : "error",
+        title:
+          response.data?.message ||
+          (isAvailable ? "Região atendida!" : "Região não atendida"),
+      });
+
+      // Set availability based on API response
+      if (isAvailable) {
+        setAvailability(true);
+      } else {
+        setAvailability(false);
+      }
     } catch (error) {
       console.error("Error fetching zip code:", error);
+
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Erro ao verificar disponibilidade"
+        : "Erro ao verificar disponibilidade";
+
+      toast({
+        status: "error",
+        title: errorMessage,
+      });
+
+      setAvailability(false);
     }
   };
   return (
     <div className="mx-auto max-w-[528px] h-full flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
-      <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[36px] text-center mb-4 tracking-[-0.01em] font-helvetica-neue font-semibold">
+        <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[36px] text-center mb-4 tracking-[-0.01em] font-helvetica-neue font-semibold">
           Qual seu CEP?
         </h1>
         <p className="text-[18px] sm:text-[20px] dark:text-cyan-light text-blue leading-[26px] text-center">

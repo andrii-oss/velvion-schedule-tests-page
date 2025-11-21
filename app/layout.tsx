@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Work_Sans } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Providers } from "@/providers/providers";
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,6 +60,7 @@ export default function RootLayout({
         className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable} ${workSans.variable}`}
       >
         <Providers>{children}</Providers>
+        <Toaster />
       </body>
     </html>
   );
