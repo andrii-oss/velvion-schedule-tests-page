@@ -56,7 +56,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <body
-        className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable} ${workSans.variable} h-full`}
+        className={`${satoshi.variable} ${geistSans.variable} ${geistMono.variable} ${workSans.variable}`}
       >
         <Providers>{children}</Providers>
       </body>
