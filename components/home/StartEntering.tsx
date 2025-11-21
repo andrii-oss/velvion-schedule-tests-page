@@ -82,10 +82,10 @@ export default function StartEntering() {
   return (
     <div className="mx-auto max-w-[528px] h-full flex flex-col w-full">
       <div className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
-        <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[42px] sm:leading-[46px] text-center mb-4 tracking-[-0.01em] font-semibold">
+      <h1 className="text-[32px] dark:text-cyan text-dark sm:text-[36px] text-center mb-4 tracking-[-0.01em] font-helvetica-neue font-semibold">
           Qual seu CEP?
         </h1>
-        <p className="text-[16px] sm:text-[18px] dark:text-cyan-light text-blue sm:leading-[36px] text-center">
+        <p className="text-[18px] sm:text-[20px] dark:text-cyan-light text-blue leading-[26px] text-center">
           Vamos confirmar se já atendemos a sua região.
         </p>
       </div>
@@ -131,7 +131,7 @@ export default function StartEntering() {
 
             <Button
               disabled={!form.formState.isValid || form.formState.isSubmitting}
-              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"
+              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"
               type="submit"
             >
               Continuar

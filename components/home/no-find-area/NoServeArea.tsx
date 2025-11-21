@@ -10,13 +10,13 @@ export default function NoServeArea() {
       </p>
       <div className="max-w-[425px] w-full mx-auto flex gap-4">
         <button
-          className="bg-transparent hover:bg-cyan border-cyan  border-2 hover:border-transparent hover:border w-full hover:text-white text-cyan py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+          className="bg-transparent hover:bg-cyan border-cyan  border-2 hover:border-transparent hover:border w-full hover:text-white text-cyan py-[14px] transition-all duration-300 ease-out font-semibold"
           type="submit"
         >
           Go Back
         </button>
         <button
-          className="bg-cyan hover:bg-transparent border-transparent border-2  hover:border-cyan hover:border w-full hover:text-cyan text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+          className="bg-cyan hover:bg-transparent border-transparent border-2  hover:border-cyan hover:border w-full hover:text-cyan text-white py-[14px] transition-all duration-300 ease-out font-semibold"
           type="submit"
         >
           Continue

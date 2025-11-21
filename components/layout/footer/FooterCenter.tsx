@@ -40,7 +40,7 @@ export default function FooterCenter() {
     <div className="w-full flex ltablet:flex-row flex-col border-b border-cream py-8 sm:py-14 justify-between items-center gap-6">
       <div className="flex w-full flex-col ltablet:flex-row justify-center items-center gap-4">
         <div className="w-full ltablet:max-w-[273px] ltablet:min-w-[145px]">
-          <h2 className="text-white text-center ltablet:text-left text-[18px] font-bold whitespace-nowrap">
+          <h2 className="text-white text-center ltablet:text-left font-work-sans font-bold text-2xl whitespace-nowrap">
             Fique por dentro
           </h2>
         </div>
@@ -76,7 +76,7 @@ export default function FooterCenter() {
               )}
             />
             <Button
-              className="bg-cyan h-[60px] hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full sm:w-[143px] hover:text-cyan text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+              className="bg-cyan h-[60px] hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full sm:w-[143px] hover:text-cyan text-white py-[14px] transition-all duration-300 ease-out font-semibold"
               type="submit"
             >
               Inscrever-se

@@ -1,6 +1,5 @@
-import PurchasePage from "@/components/home/PurchasePage";
+import PurchasePage from "@/components/home/purchasePage/PurchasePage";
 import StartEntering from "@/components/home/StartEntering";
-
 
 export default function Home() {
   return (

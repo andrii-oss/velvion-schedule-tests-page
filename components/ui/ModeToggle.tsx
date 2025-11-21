@@ -16,7 +16,7 @@ export function ModeToggle() {
   if (!mounted) {
     return (
       <Button
-        className="h-[40px] border-0 p-2 smobile:p-2.5 cursor-pointer absolute right-6 top-10"
+        className="h-[40px] border-0 p-2 smobile:p-2.5 absolute right-6 top-10"
         variant="outline"
         iconSize="lg"
         disabled
@@ -31,7 +31,7 @@ export function ModeToggle() {
 
   return (
     <Button
-      className="h-[40px] border-0 p-2 smobile:p-2.5 cursor-pointer absolute right-6 top-10"
+      className="h-[40px] border-0 p-2 smobile:p-2.5  absolute right-6 top-10"
       variant="outline"
       iconSize="lg"
       onClick={() => setTheme(isDark ? "light" : "dark")}

@@ -34,11 +34,19 @@ export default {
       fontFamily: {
         sans: ["var(--font-satoshi)", "Arial", "sans-serif"],
         satoshi: ["var(--font-satoshi)", "Arial", "sans-serif"],
+        "helvetica-neue": [
+          "Helvetica Neue",
+          "Helvetica",
+          "Arial",
+          "sans-serif",
+        ],
+        "work-sans": ["var(--font-work-sans)", "Arial", "sans-serif"],
       },
       colors: {
         // Base colors
         cream: "#f9f9f7",
         dark: "#2b2d2f",
+        "light-dark": "#6e7378",
         black: "#0a0a0a",
         light: "#ededed",
         blue: "#8898a8",

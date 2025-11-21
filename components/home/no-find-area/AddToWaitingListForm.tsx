@@ -181,7 +181,7 @@ export default function AddToWaitingListForm() {
             />
 
             <button
-              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-white py-[14px] cursor-pointer transition-all duration-300 ease-out font-semibold"
+              className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-white py-[14px] transition-all duration-300 ease-out font-semibold"
               type="submit"
             >
               Continue

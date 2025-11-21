@@ -206,7 +206,7 @@ const CountrySelect = ({
           <Button
             type="button"
             variant="ghost"
-            className="flex gap-1 p-1 h-full border-none cursor-pointer"
+            className="flex gap-1 p-1 h-full border-none"
             disabled={disabled}
           >
             <FlagComponent
@@ -265,7 +265,7 @@ const CountrySelectOption = ({
 }: CountrySelectOptionProps) => {
   return (
     <CommandItem
-      className="gap-2 cursor-pointer hover:bg-gray-200"
+      className="gap-2 hover:bg-gray-200"
       onSelect={() => onChange(country)}
     >
       <FlagComponent country={country} countryName={countryName} />
