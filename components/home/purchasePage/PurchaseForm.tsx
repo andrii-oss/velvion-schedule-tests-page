@@ -81,7 +81,7 @@ export default function PurchaseForm() {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/`, {
         cep: values.coupon,
-        phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Надсилання у форматі E.164
+        phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
       });
 
       console.log("response", response);
