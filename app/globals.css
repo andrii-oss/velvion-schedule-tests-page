@@ -42,7 +42,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
+a, ul, li {
   text-decoration: none;
 }
 button {

@@ -80,7 +80,7 @@ export default function PurchaseForm() {
     }
   };
   return (
-    <div className="w-full mx-auto flex flex-col h-full">
+    <div className="w-full mx-auto flex flex-col h-full border-t border-gray dark:border-cyan-light pt-[36px]">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

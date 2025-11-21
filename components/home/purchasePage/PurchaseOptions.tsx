@@ -39,7 +39,7 @@ export default function PurchaseOptions() {
     <section className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
       <h2
         id="payment-options-heading"
-        className="text-dark dark:text-cyan-light text-2xl font-helvetica-neue font-semibold mb-3"
+        className="text-dark dark:text-cyan-light text-2xl font-helvetica-neue font-medium mb-3"
       >
         Escolha uma opção
       </h2>
