@@ -73,14 +73,10 @@ export default function StartEntering() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      if (!BASE_URL) {
-        throw new Error("BASE_URL não configurado");
-      }
-
       const response = await axios.post(
         `${BASE_URL}/api/v1/locations/check-availability`,
         {
-          cep: values.zipCode,
+          cep: values.zipCode, //test success 09090909
         }
       );
 
@@ -90,9 +86,7 @@ export default function StartEntering() {
 
       toast({
         status: isAvailable ? "success" : "error",
-        title:
-          response.data?.message ||
-          (isAvailable ? "Região atendida!" : "Região não atendida"),
+        title: response.data?.message,
       });
 
       // Set availability based on API response

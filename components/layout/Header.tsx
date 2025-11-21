@@ -18,6 +18,26 @@ export default function Header() {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
   }, []);
+
+  useEffect(() => {
+    if (isAvailable === true) {
+      window.history.pushState(null, "", window.location.href);
+    }
+  }, [isAvailable]);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isAvailable === true) {
+        reset();
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [isAvailable, reset]);
+
   const currentTheme = mounted ? resolvedTheme || theme : "dark";
   const logoSrc = `/logo-${currentTheme === "light" ? "light" : "dark"}.svg`;
 
