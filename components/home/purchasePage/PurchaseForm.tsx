@@ -19,30 +19,12 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CouponData } from "@/types/couponTypes";
 import { useToast } from "@/hooks/use-toast";
+import { PaymentData } from "@/types/paymentData";
+import { useState } from "react";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 const baseLink = "https://www.velvion.com.br";
 
-export interface PaymentData {
-  bankSlipUrl: string;
-  billingType: string;
-  customer: string;
-  dateCreated: string; // ISO string
-  description: string;
-  dueDate: string; // YYYY-MM-DD
-  externalReference: string | null;
-  id: string;
-  installmentCount: number | null;
-  installmentValue: number | null;
-  interestValue: number | null;
-  invoiceNumber: string;
-  invoiceUrl: string;
-  netValue: number;
-  originalValue: number | null;
-  status: string;
-  transactionReceiptUrl: string | null;
-  value: number;
-}
 
 function formatBrazilPhone(value: string) {
   const digits = value.replace(/\D/g, "");
@@ -93,6 +75,7 @@ export default function PurchaseForm({
   couponData,
   selectedOption,
 }: PurchaseFormProps) {
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
@@ -116,6 +99,7 @@ export default function PurchaseForm({
 
   const onSubmit = async (values: FormSchema) => {
     try {
+      setIsLoading(true);
       const response = await axios.post<PaymentData>(
         `${BASE_URL}/api/v1/payments/create`,
         {
@@ -136,11 +120,11 @@ export default function PurchaseForm({
           status: "success",
           title: "Sucesso ao criar pagamento!",
         });
+        window.location.href = paymentData.invoiceUrl;
       } else {
         throw new Error("Erro ao criar pagamento");
       }
 
-      console.log("response", response);
     } catch (error) {
       console.error("Error fetching zip code:", error);
       const errorMessage = axios.isAxiosError(error)
@@ -150,6 +134,8 @@ export default function PurchaseForm({
         status: "error",
         title: errorMessage,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -308,7 +294,8 @@ export default function PurchaseForm({
             disabled={
               !form.formState.isValid ||
               form.formState.isSubmitting ||
-              !form.watch("termsAccepted")
+              !form.watch("termsAccepted") ||
+              isLoading
             }
             className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"
             type="submit"

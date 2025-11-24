@@ -64,7 +64,6 @@ export default function PurchaseOptions({
       } else {
         onCouponData(null);
       }
-      console.log("sendPromoCode response:", response);
     } catch (error) {
       console.error("Error validating coupon:", error);
       onCouponData(null);
