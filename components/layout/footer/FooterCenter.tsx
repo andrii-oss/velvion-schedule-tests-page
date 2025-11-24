@@ -32,8 +32,12 @@ export default function FooterCenter() {
   });
 
   const footerPolicyLinks: FooterNavLink[] = [
-    { href: "/", label: "Política de Privacidade" },
-    { href: "/", label: "Termos de Serviço" },
+    {
+      href: "https://www.velvion.com.br/politica-de-privacidade-da-velvion",
+      label: "Política de Privacidade",
+    },
+    { href: "https://www.velvion.com.br/sobre", 
+      label: "Termos de Serviço" },
   ];
 
   return (
@@ -47,7 +51,9 @@ export default function FooterCenter() {
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(() => console.log("submit"))}
+            onSubmit={form.handleSubmit(() => {
+              window.location.assign("https://www.velvion.com.br");
+            })}
             className=" flex w-full flex-col sm:flex-row gap-6 sm:gap-4 h-full justify-center ltablet:justify-start"
           >
             <FormField

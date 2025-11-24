@@ -20,6 +20,8 @@ import { isValidPhoneNumber } from "react-phone-number-input";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
+const baseLink = "https://www.velvion.com.br";
+
 
 function formatBrazilPhone(value: string) {
   const digits = value.replace(/\D/g, "");
@@ -39,7 +41,10 @@ function formatBrazilPhone(value: string) {
 }
 
 const formSchema = z.object({
-  cpfCode: z.string().min(11, "mínimo 11 caracteres").max(11, "máximo 11 caracteres"),
+  cpfCode: z
+    .string()
+    .min(11, "mínimo 11 caracteres")
+    .max(11, "máximo 11 caracteres"),
   fullName: z.string().min(2, "mínimo 2 caracteres"),
   phoneNumber: z
     .string()
@@ -213,7 +218,7 @@ export default function PurchaseForm() {
             >
               Li e concordo com os{" "}
               <Link
-                href="/"
+                href={`${baseLink}/sobre`}
                 className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors "
                 onClick={(e) => e.stopPropagation()}
               >
@@ -221,7 +226,7 @@ export default function PurchaseForm() {
               </Link>
               ,{" "}
               <Link
-                href="/"
+                href={`${baseLink}/politica-de-privacidade-da-velvion`}
                 className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >
@@ -229,7 +234,7 @@ export default function PurchaseForm() {
               </Link>{" "}
               e{" "}
               <Link
-                href="/"
+                href={`${baseLink}`}
                 className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
                 onClick={(e) => e.stopPropagation()}
               >

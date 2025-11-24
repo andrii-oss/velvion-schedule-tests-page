@@ -8,21 +8,23 @@ export type FooterNavLinks = {
   links: FooterNavLink[];
 };
 
+const baseLink = "https://www.velvion.com.br";
+
 export const footerNavLinks: FooterNavLinks[] = [
   {
     title: "Como Funciona",
     links: [
       {
         label: "FAQs",
-        href: "/",
+        href: `${baseLink}/faq`,
       },
       {
         label: "Sobre",
-        href: "/",
+        href: `${baseLink}/sobre`,
       },
       {
         label: "Ajuda",
-        href: "/",
+        href: `${baseLink}`,
       },
     ],
   },
@@ -31,11 +33,11 @@ export const footerNavLinks: FooterNavLinks[] = [
     links: [
       {
         label: "Compartilhe sua história",
-        href: "/",
+        href: `${baseLink}`,
       },
       {
         label: "Preços",
-        href: "/",
+        href: `${baseLink}`,
       },
     ],
   },
@@ -44,11 +46,11 @@ export const footerNavLinks: FooterNavLinks[] = [
     links: [
       {
         label: "Correiras",
-        href: "/",
+        href: `${baseLink}`,
       },
       {
         label: "Contate-nos",
-        href: "/",
+        href: `${baseLink}`,
       },
     ],
   },
