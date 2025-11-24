@@ -25,7 +25,7 @@ export default function PurchasePage() {
       </section>
       <PurchaseOptions onSelectedOption={setSelectedOption} selectedOption={selectedOption} couponData={couponData} onCouponData={setCouponData} />
       <PurchaseBenefits />
-      <PurchaseForm couponData={couponData} />
+      <PurchaseForm couponData={couponData} selectedOption={selectedOption} />
     </div>
   );
 }

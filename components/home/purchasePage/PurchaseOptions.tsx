@@ -37,7 +37,6 @@ export default function PurchaseOptions({
   onCouponData,
   couponData,
 }: PurchaseOptionsProps) {
-  
   const [promoCode, setPromoCode] = useState<string>("");
   const { toast } = useToast();
   const sendPromoCode = async () => {
@@ -100,7 +99,9 @@ export default function PurchaseOptions({
             type="button"
             role="radio"
             aria-checked={selectedOption === option.type}
-              onClick={() => {onSelectedOption(option.type)}}
+            onClick={() => {
+              onSelectedOption(option.type);
+            }}
             key={option.type}
             className={cn(
               "flex flex-1 flex-col gap-1 border border-gray dark:border-cyan-light rounded-lg p-4 min-h-[132px] text-left",
@@ -159,7 +160,7 @@ export default function PurchaseOptions({
         </Button>
         <span
           className={cn(
-            "text-cyan dark:text-cyan-light text-[16px] absolute left-0 transition-all duration-500 ease-out",
+            "text-cyan dark:text-cyan-light text-[3vw] mobile:text-[16px] absolute left-0 transition-all duration-500 ease-out",
             couponData?.valid === true
               ? "opacity-100 translate-y-0 bottom-[-30px]"
               : "opacity-0 -translate-y-full bottom-[-10px] pointer-events-none"

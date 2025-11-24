@@ -18,9 +18,31 @@ import axios from "axios";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { CouponData } from "@/types/couponTypes";
+import { useToast } from "@/hooks/use-toast";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 const baseLink = "https://www.velvion.com.br";
+
+export interface PaymentData {
+  bankSlipUrl: string;
+  billingType: string;
+  customer: string;
+  dateCreated: string; // ISO string
+  description: string;
+  dueDate: string; // YYYY-MM-DD
+  externalReference: string | null;
+  id: string;
+  installmentCount: number | null;
+  installmentValue: number | null;
+  interestValue: number | null;
+  invoiceNumber: string;
+  invoiceUrl: string;
+  netValue: number;
+  originalValue: number | null;
+  status: string;
+  transactionReceiptUrl: string | null;
+  value: number;
+}
 
 function formatBrazilPhone(value: string) {
   const digits = value.replace(/\D/g, "");
@@ -65,8 +87,13 @@ type FormSchema = z.infer<typeof formSchema>;
 
 interface PurchaseFormProps {
   couponData: CouponData | null;
+  selectedOption: number;
 }
-export default function PurchaseForm({ couponData }: PurchaseFormProps) {
+export default function PurchaseForm({
+  couponData,
+  selectedOption,
+}: PurchaseFormProps) {
+  const { toast } = useToast();
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,24 +111,45 @@ export default function PurchaseForm({ couponData }: PurchaseFormProps) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     formState: { isValid, isDirty },
   } = form;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars, react-hooks/incompatible-library
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const currValues = form.watch();
 
   const onSubmit = async (values: FormSchema) => {
     try {
-      const response = await axios.post(`${BASE_URL}/api/v1/payments/create`, {
-        "payment_type": "installment_payment",
-        cep: values.cpfCode,
-        cpf: values.cpfCode,
-        customer_name: values.fullName, 
-        customer_email: values.email,
-        customer_phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
-        total_value: couponData?.final_value || 1080,
-      });
+      const response = await axios.post<PaymentData>(
+        `${BASE_URL}/api/v1/payments/create`,
+        {
+          payment_type:
+            selectedOption === 12 ? "installment_payment" : "full_payment",
+          cpf: values.cpfCode, //12345678909 -> test for successful response
+          customer_name: values.fullName,
+          customer_email: values.email,
+          customer_phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
+          total_value: couponData?.final_value || 1080,
+        }
+      );
+
+      const paymentData: PaymentData = response.data;
+
+      if (paymentData.invoiceUrl) {
+        toast({
+          status: "success",
+          title: "Sucesso ao criar pagamento!",
+        });
+      } else {
+        throw new Error("Erro ao criar pagamento");
+      }
 
       console.log("response", response);
     } catch (error) {
       console.error("Error fetching zip code:", error);
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Erro ao criar pagamento"
+        : "Erro ao criar pagamento";
+      toast({
+        status: "error",
+        title: errorMessage,
+      });
     }
   };
 
