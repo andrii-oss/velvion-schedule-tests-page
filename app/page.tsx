@@ -16,6 +16,7 @@ export default function Home() {
       typeof window !== "undefined" &&
       sessionStorage.getItem("cepLocation")
     ) {
+
       setAvailability(true);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

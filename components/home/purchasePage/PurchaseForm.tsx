@@ -11,7 +11,6 @@ import {
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import Link from "next/link";
 import { Input } from "../../ui/input";
 import { Button } from "../../ui/button";
@@ -21,7 +20,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 const baseLink = "https://www.velvion.com.br";
-
 
 function formatBrazilPhone(value: string) {
   const digits = value.replace(/\D/g, "");
@@ -41,10 +39,7 @@ function formatBrazilPhone(value: string) {
 }
 
 const formSchema = z.object({
-  cpfCode: z
-    .string()
-    .min(11, "mínimo 11 caracteres")
-    .max(11, "máximo 11 caracteres"),
+  cpfCode: z.string().min(11, "mínimo 11 caracteres"),
   fullName: z.string().min(2, "mínimo 2 caracteres"),
   phoneNumber: z
     .string()
@@ -60,13 +55,14 @@ const formSchema = z.object({
     .string()
     .min(1, "E-mail obrigatório")
     .email({ message: "E-mail inválido" }),
+  termsAccepted: z.boolean().refine((value) => value === true, {
+    message: "Você deve aceitar os termos para continuar",
+  }),
 });
 
 type FormSchema = z.infer<typeof formSchema>;
 
 export default function PurchaseForm() {
-  const [isChecked, setIsChecked] = useState(false);
-
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,13 +70,18 @@ export default function PurchaseForm() {
       fullName: "",
       email: "",
       phoneNumber: "",
+      termsAccepted: false,
     },
-    mode: "all",
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
-  const toggleSelection = () => {
-    setIsChecked((prev) => !prev);
-  };
+  const {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    formState: { isValid, isDirty },
+  } = form;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, react-hooks/incompatible-library
+  const currValues = form.watch();
 
   const onSubmit = async (values: FormSchema) => {
     try {
@@ -124,7 +125,9 @@ export default function PurchaseForm() {
                     value={field.value}
                     onChange={(e) => {
                       const digits = e.target.value.replace(/\D/g, "");
-                      field.onChange(digits);
+                      if (digits.length <= 11) {
+                        field.onChange(digits);
+                      }
                     }}
                   />
                 </FormControl>
@@ -149,7 +152,7 @@ export default function PurchaseForm() {
                     {...field}
                   />
                 </FormControl>
-                <FormMessage className="absolute bottom-[-15px] left-0 z-1 ">
+                <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500">
                   {form.formState.errors.fullName?.message}
                 </FormMessage>
               </FormItem>
@@ -206,39 +209,50 @@ export default function PurchaseForm() {
               </FormItem>
             )}
           />
-          <div className="flex items-center gap-2 mb-13">
-            <Checkbox
-              checked={isChecked}
-              onCheckedChange={(checked) => setIsChecked(checked === true)}
-            />
-            <label
-              htmlFor="terms"
-              className="text-sm text-blue dark:text-cyan-light cursor-pointer"
-              onClick={toggleSelection}
-            >
-              Li e concordo com os{" "}
-              <Link
-                href={`${baseLink}/sobre`}
-                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors "
-                onClick={(e) => e.stopPropagation()}
-              >
-                Termos de Uso
-              </Link>
-              ,{" "}
-              <Link
-                href={`${baseLink}/politica-de-privacidade-da-velvion`}
-                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Política de Privacidade
-              </Link>
-              .
-            </label>
-          </div>
+          <FormField
+            control={form.control}
+            name="termsAccepted"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2 mb-13 space-y-0 relative">
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={(checked) =>
+                      field.onChange(checked === true)
+                    }
+                  />
+                </FormControl>
+                <FormLabel className="text-sm text-blue dark:text-cyan-light cursor-pointer mt-0!">
+                  Li e concordo com os{" "}
+                  <Link
+                    href={`${baseLink}/sobre`}
+                    className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors "
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Termos de Uso
+                  </Link>
+                  ,{" "}
+                  <Link
+                    href={`${baseLink}/politica-de-privacidade-da-velvion`}
+                    className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Política de Privacidade
+                  </Link>
+                  .
+                </FormLabel>
+                <FormMessage className="absolute bottom-[-20px] left-0 z-1 text-red-500" />
+              </FormItem>
+            )}
+          />
 
           {/* Submit */}
           <Button
-            disabled={!form.formState.isValid || form.formState.isSubmitting}
+            disabled={
+              !form.formState.isValid ||
+              form.formState.isSubmitting ||
+              !form.watch("termsAccepted")
+            }
             className="bg-cyan hover:bg-transparent border-transparent border-2 hover:border-cyan hover:border w-full hover:text-cyan text-dark py-[14px] transition-all duration-300 ease-out font-semibold mt-auto disabled:opacity-50"
             type="submit"
           >
