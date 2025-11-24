@@ -114,6 +114,7 @@ export default function StartEntering() {
       // Set availability based on API response
       if (isAvailable) {
         setAvailability(true);
+        sessionStorage.setItem("cepLocation", `${values.zipCode}`);
       } else {
         setAvailability(false);
       }
