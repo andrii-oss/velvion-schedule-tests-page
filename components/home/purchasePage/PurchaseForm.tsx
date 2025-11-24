@@ -39,7 +39,7 @@ function formatBrazilPhone(value: string) {
 }
 
 const formSchema = z.object({
-  coupon: z.string(),
+  cpfCode: z.string().min(11, "mínimo 11 caracteres").max(11, "máximo 11 caracteres"),
   fullName: z.string().min(2, "mínimo 2 caracteres"),
   phoneNumber: z
     .string()
@@ -65,7 +65,7 @@ export default function PurchaseForm() {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      coupon: "",
+      cpfCode: "",
       fullName: "",
       email: "",
       phoneNumber: "",
@@ -80,7 +80,7 @@ export default function PurchaseForm() {
   const onSubmit = async (values: FormSchema) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/`, {
-        cep: values.coupon,
+        cep: values.cpfCode,
         phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
       });
 
@@ -106,7 +106,7 @@ export default function PurchaseForm() {
           {/* Coupon */}
           <FormField
             control={form.control}
-            name="coupon"
+            name="cpfCode"
             render={({ field }) => (
               <FormItem className="relative mb-6">
                 <FormLabel className="text-dark dark:text-cyan-light text-[16px] font-bold">
@@ -114,9 +114,13 @@ export default function PurchaseForm() {
                 </FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Cupom de desconto"
+                    placeholder="Digite seu CPF"
                     className="p-5 mt-2"
-                    {...field}
+                    value={field.value}
+                    onChange={(e) => {
+                      const digits = e.target.value.replace(/\D/g, "");
+                      field.onChange(digits);
+                    }}
                   />
                 </FormControl>
                 <FormMessage className="absolute bottom-[-20px] left-0 text-red-500" />

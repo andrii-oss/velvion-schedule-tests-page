@@ -46,7 +46,8 @@ const Toast = React.forwardRef<
     VariantProps<typeof toastVariants>
 >(({ className, variant, ...props }, ref) => {
   const [isOpen, setIsOpen] = React.useState(false);
-  const toastRef = React.useRef<React.ElementRef<typeof ToastPrimitives.Root>>(null);
+  const toastRef =
+    React.useRef<React.ElementRef<typeof ToastPrimitives.Root>>(null);
 
   React.useEffect(() => {
     const element = toastRef.current;

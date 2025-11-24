@@ -34,8 +34,8 @@ export function Toaster() {
             variant={status === "error" ? "destructive" : "default"}
             {...props}
           >
-            <div className="flex items-start gap-3 flex-1">
-              <Icon className={`h-5 w-5 ${iconColor} shrink-0 mt-0.5`} />
+            <div className="flex items-center gap-3 flex-1">
+              <Icon className={`h-7 w-7 ${iconColor} shrink-0 mt-0.5`} />
               <div className="grid gap-1 flex-1">
                 {title && <ToastTitle>{title}</ToastTitle>}
                 {description && (
