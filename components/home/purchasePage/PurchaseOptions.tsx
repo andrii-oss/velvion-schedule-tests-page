@@ -7,13 +7,13 @@ import { Button } from "@/components/ui/button";
 
 const optionsList = [
   {
-    id: "1",
+    type: 1,
     title: "À vista, economize R$100",
     price: "R$1.088",
     methods: "Credit, Pix, or Debit",
   },
   {
-    id: "2",
+    type: 12,
     title: "À vista, economize",
     price: "12x R$99",
     methods: "Credito",
@@ -21,7 +21,7 @@ const optionsList = [
 ];
 
 export default function PurchaseOptions() {
-  const [selectedOption, setSelectedOption] = useState<string>("1");
+  const [selectedOption, setSelectedOption] = useState<number>(1);
   const [promoCode, setPromoCode] = useState<string>("");
 
   const sendPromoCode = async () => {
@@ -55,12 +55,12 @@ export default function PurchaseOptions() {
           <button
             type="button"
             role="radio"
-            aria-checked={selectedOption === option.id}
-            onClick={() => setSelectedOption(option.id)}
-            key={option.id}
+            aria-checked={selectedOption === option.type}
+            onClick={() => setSelectedOption(option.type)}
+            key={option.type}
             className={cn(
-              "flex flex-1 flex-col gap-1 border border-gray dark:border-cyan-light rounded-lg p-4 max-h-[132px] text-left",
-              selectedOption === option.id
+              "flex flex-1 flex-col gap-1 border border-gray dark:border-cyan-light rounded-lg p-4 min-h-[132px] text-left",
+              selectedOption === option.type
                 ? "border-cyan bg-cyan-light"
                 : "hover:border-cyan/30 hover:bg-cyan-light/30 dark:hover:bg-cyan-light/10 transition-all duration-300 ease-out"
             )}
@@ -68,7 +68,7 @@ export default function PurchaseOptions() {
             <span
               className={cn(
                 "text-base font-medium",
-                selectedOption === option.id ? "text-light-dark" : "text-blue"
+                selectedOption === option.type ? "text-light-dark" : "text-blue"
               )}
             >
               {option.title}
@@ -76,7 +76,7 @@ export default function PurchaseOptions() {
             <span
               className={cn(
                 "text-[28px] font-bold",
-                selectedOption === option.id
+                selectedOption === option.type
                   ? "text-dark"
                   : "dark:text-cyan-light"
               )}
@@ -86,7 +86,7 @@ export default function PurchaseOptions() {
             <span
               className={cn(
                 "text-base font-medium",
-                selectedOption === option.id ? "text-light-dark" : "text-blue"
+                selectedOption === option.type ? "text-light-dark" : "text-blue"
               )}
             >
               {option.methods}

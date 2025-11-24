@@ -108,7 +108,7 @@ export default function PurchaseForm() {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col">
-          {/* Coupon */}
+          {/* cpfCode */}
           <FormField
             control={form.control}
             name="cpfCode"
