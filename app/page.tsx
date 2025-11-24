@@ -12,20 +12,19 @@ export default function Home() {
   );
 
   useEffect(() => {
-    if (typeof window !== "undefined" && sessionStorage.getItem("cepLocation")) {
+    if (
+      typeof window !== "undefined" &&
+      sessionStorage.getItem("cepLocation")
+    ) {
       setAvailability(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className="min-w-full flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col">
-        {isAvailable === true ? (
-          <PurchasePage />
-        ) : (
-          <StartEntering />
-        )}
+        {isAvailable === true ? <PurchasePage /> : <StartEntering />}
         {/* <NoServeArea /> */}
         {/* <ComeBackLater /> */}
         {/* <AddToWaitingListForm /> */}

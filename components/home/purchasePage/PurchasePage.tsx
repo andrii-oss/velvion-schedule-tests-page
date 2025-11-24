@@ -1,8 +1,15 @@
+"use client";
+
 import PurchaseOptions from "./PurchaseOptions";
 import PurchaseBenefits from "./PurchaseBenefits";
 import PurchaseForm from "./PurchaseForm";
+import { CouponResponse } from "@/types/couponTypes";
+import { useState } from "react";
 
 export default function PurchasePage() {
+  const [couponResponse, setCouponResponse] = useState<CouponResponse | null>(
+    null
+  );
   return (
     <div className="mx-auto max-w-[600px] flex flex-col w-full">
       <section className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
@@ -15,7 +22,7 @@ export default function PurchasePage() {
           Mantenha-se sempre um passo à frente.
         </p>
       </section>
-      <PurchaseOptions />
+      <PurchaseOptions couponResponse={couponResponse} onCouponResponse={setCouponResponse} />
       <PurchaseBenefits />
       <PurchaseForm />
     </div>

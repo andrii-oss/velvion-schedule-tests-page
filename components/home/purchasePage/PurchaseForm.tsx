@@ -231,14 +231,6 @@ export default function PurchaseForm() {
                 onClick={(e) => e.stopPropagation()}
               >
                 Política de Privacidade
-              </Link>{" "}
-              e{" "}
-              <Link
-                href={`${baseLink}`}
-                className="text-cyan font-semibold underline! hover:text-cyan/80 transition-colors"
-                onClick={(e) => e.stopPropagation()}
-              >
-                Consentimento LGPD
               </Link>
               .
             </label>

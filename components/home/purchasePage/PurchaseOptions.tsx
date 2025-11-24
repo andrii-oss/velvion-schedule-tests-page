@@ -4,6 +4,15 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { CouponResponse } from "@/types/couponTypes";
+import { useToast } from "@/hooks/use-toast";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
+
+interface PurchaseOptionsProps {
+  onCouponResponse: (response: CouponResponse | null) => void;
+  couponResponse: CouponResponse | null;
+}
 
 const optionsList = [
   {
@@ -20,21 +29,52 @@ const optionsList = [
   },
 ];
 
-export default function PurchaseOptions() {
+export default function PurchaseOptions({
+  onCouponResponse,
+  couponResponse,
+}: PurchaseOptionsProps) {
   const [selectedOption, setSelectedOption] = useState<number>(1);
   const [promoCode, setPromoCode] = useState<string>("");
-
+  const { toast } = useToast();
   const sendPromoCode = async () => {
     if (!promoCode.trim()) return;
-    // Тут можна додати логіку валідації та застосування промокоду
-    console.log("Promo code:", promoCode);
-  };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      sendPromoCode();
+    try {
+      const response = await axios.post<CouponResponse>(
+        `${BASE_URL}/api/v1/coupons/validate`,
+        {
+          coupon_id: promoCode,
+          total_value: 1080,
+          ...(selectedOption === 12
+            ? {
+                installment_value: 12,
+              }
+            : {}),
+        }
+      );
+      toast({
+        status: response.data.valid ? "success" : "error",
+        title: response.data.message,
+      });
+      if (response.data.valid) {
+        onCouponResponse(response.data);
+      } else {
+        onCouponResponse(null);
+      }
+      console.log("sendPromoCode response:", response);
+    } catch (error) {
+      console.error("Error validating coupon:", error);
+      onCouponResponse(null);
+      const errorMessage = axios.isAxiosError(error)
+        ? error.response?.data?.message || "Erro ao verificar disponibilidade"
+        : "Erro ao verificar disponibilidade";
+      toast({
+        status: "error",
+        title: errorMessage,
+      });
     }
   };
+
   return (
     <section className="pb-[36px] mb-[36px] border-b border-gray dark:border-cyan-light">
       <h2
@@ -95,14 +135,13 @@ export default function PurchaseOptions() {
         ))}
       </div>
 
-      <div className="flex flex-col smobile:flex-row gap-3 mt-6">
+      <div className="flex flex-col smobile:flex-row gap-3 mt-6 relative ">
         <Input
           type="text"
           placeholder="Cupom de desconto"
           value={promoCode}
-          onChange={(e) => setPromoCode(e.target.value)}
-          onKeyDown={handleKeyDown}
-          className="flex-1 border-cyan h-[60px] dark:border-cyan border-2"
+          onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+          className="flex-1 border-cyan h-[60px] dark:border-cyan border-2 uppercase placeholder:normal-case"
           aria-label="Cupom de desconto"
         />
         <Button
@@ -114,6 +153,16 @@ export default function PurchaseOptions() {
         >
           Aplicar
         </Button>
+        <span
+          className={cn(
+            "text-cyan dark:text-cyan-light text-[16px] absolute left-0 transition-all duration-500 ease-out",
+            couponResponse?.valid === true
+              ? "opacity-100 translate-y-0 bottom-[-30px]"
+              : "opacity-0 -translate-y-full bottom-[-10px] pointer-events-none"
+          )}
+        >
+          O desconto será aplicado na página de pagamento
+        </span>
       </div>
     </section>
   );
