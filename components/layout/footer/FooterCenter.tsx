@@ -36,8 +36,7 @@ export default function FooterCenter() {
       href: "https://www.velvion.com.br/politica-de-privacidade-da-velvion",
       label: "Política de Privacidade",
     },
-    { href: "https://www.velvion.com.br/sobre", 
-      label: "Termos de Serviço" },
+    { href: "https://www.velvion.com.br/sobre", label: "Termos de Serviço" },
   ];
 
   return (
