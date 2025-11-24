@@ -108,7 +108,7 @@ export default function StartEntering() {
       if (isAvailable) {
         setAvailability(true);
         sessionStorage.setItem("cepLocation", `${values.zipCode}`);
-      } 
+      }
     } catch (error) {
       const errorMessage = getCepErrorMessage(error);
 

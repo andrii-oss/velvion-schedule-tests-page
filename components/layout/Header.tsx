@@ -28,6 +28,7 @@ export default function Header() {
   useEffect(() => {
     const handlePopState = () => {
       if (isAvailable === true) {
+        
         reset();
       }
     };
@@ -43,6 +44,7 @@ export default function Header() {
 
   const handleBack = () => {
     reset();
+    sessionStorage.removeItem("cepLocation");
   };
 
   return (

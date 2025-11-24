@@ -27,7 +27,7 @@ export async function checkCepAvailability(
     const response = await axios.post<CepResponse>(
       `${BASE_URL}/api/v1/locations/check-availability`,
       {
-        cep: zipCode,
+        cep: zipCode, //09090909 -> test  for successful  response with available: true
       }
     );
 

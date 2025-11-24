@@ -89,10 +89,14 @@ export default function PurchaseForm({ couponData }: PurchaseFormProps) {
 
   const onSubmit = async (values: FormSchema) => {
     try {
-      const response = await axios.post(`${BASE_URL}/api/v1/`, {
+      const response = await axios.post(`${BASE_URL}/api/v1/payments/create`, {
         "payment_type": "installment_payment",
         cep: values.cpfCode,
-        phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
+        cpf: values.cpfCode,
+        customer_name: values.fullName, 
+        customer_email: values.email,
+        customer_phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
+        total_value: couponData?.final_value || 1080,
       });
 
       console.log("response", response);

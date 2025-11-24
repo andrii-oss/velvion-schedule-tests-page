@@ -10,7 +10,9 @@ import { useToast } from "@/hooks/use-toast";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 
 interface PurchaseOptionsProps {
-  onCouponData: (response: CouponData | null) => void;
+  onSelectedOption: (option: number) => void;
+  selectedOption: number;
+  onCouponData: (data: CouponData | null) => void;
   couponData: CouponData | null;
 }
 
@@ -30,10 +32,12 @@ const optionsList = [
 ];
 
 export default function PurchaseOptions({
+  onSelectedOption,
+  selectedOption,
   onCouponData,
   couponData,
 }: PurchaseOptionsProps) {
-  const [selectedOption, setSelectedOption] = useState<number>(1);
+  
   const [promoCode, setPromoCode] = useState<string>("");
   const { toast } = useToast();
   const sendPromoCode = async () => {
@@ -96,7 +100,7 @@ export default function PurchaseOptions({
             type="button"
             role="radio"
             aria-checked={selectedOption === option.type}
-            onClick={() => setSelectedOption(option.type)}
+              onClick={() => {onSelectedOption(option.type)}}
             key={option.type}
             className={cn(
               "flex flex-1 flex-col gap-1 border border-gray dark:border-cyan-light rounded-lg p-4 min-h-[132px] text-left",

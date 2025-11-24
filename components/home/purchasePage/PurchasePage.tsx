@@ -7,6 +7,7 @@ import { CouponData } from "@/types/couponTypes";
 import { useState } from "react";
 
 export default function PurchasePage() {
+  const [selectedOption, setSelectedOption] = useState<number>(1);
   const [couponData, setCouponData] = useState<CouponData | null>(
     null
   );
@@ -22,7 +23,7 @@ export default function PurchasePage() {
           Mantenha-se sempre um passo à frente.
         </p>
       </section>
-      <PurchaseOptions couponData={couponData} onCouponData={setCouponData} />
+      <PurchaseOptions onSelectedOption={setSelectedOption} selectedOption={selectedOption} couponData={couponData} onCouponData={setCouponData} />
       <PurchaseBenefits />
       <PurchaseForm couponData={couponData} />
     </div>
