@@ -1,12 +1,12 @@
-export interface CouponData {
+export interface CouponMain {
   coupon_id: string;
   discount_type: "percentage" | string;
   discount: number;
   code: string;
 }
 
-export interface CouponResponse {
-  coupon_data: CouponData | null;
+export interface CouponData {
+  coupon_data: CouponMain | null;
   discount_amount: number;
   discount_percentage: number;
   final_value: number;

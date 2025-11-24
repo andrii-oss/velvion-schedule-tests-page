@@ -14,10 +14,9 @@ import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import axios from "axios";
 import { useAvailabilityStore } from "@/store/availability-store";
 import { useToast } from "@/hooks/use-toast";
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
+import { checkCepAvailability, getCepErrorMessage } from "@/lib/cep-api";
 
 export interface CepResponse {
   available: boolean;
@@ -95,14 +94,8 @@ export default function StartEntering() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post<CepResponse>(
-        `${BASE_URL}/api/v1/locations/check-availability`,
-        {
-          cep: values.zipCode, //test success 09090909
-        }
-      );
-      const responseData: CepResponse = response.data;
-      const isAvailable = responseData.available === true;
+      const { response: responseData, isAvailable } =
+        await checkCepAvailability(values.zipCode);
 
       toast({
         status: isAvailable ? "success" : "error",
@@ -115,15 +108,9 @@ export default function StartEntering() {
       if (isAvailable) {
         setAvailability(true);
         sessionStorage.setItem("cepLocation", `${values.zipCode}`);
-      } else {
-        setAvailability(false);
-      }
+      } 
     } catch (error) {
-      console.error("Error fetching zip code:", error);
-
-      const errorMessage = axios.isAxiosError(error)
-        ? error.response?.data?.message || "Erro ao verificar disponibilidade"
-        : "Erro ao verificar disponibilidade";
+      const errorMessage = getCepErrorMessage(error);
 
       toast({
         status: "error",

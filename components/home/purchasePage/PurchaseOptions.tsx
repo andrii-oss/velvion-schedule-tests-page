@@ -5,13 +5,13 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
-import { CouponResponse } from "@/types/couponTypes";
+import { CouponData } from "@/types/couponTypes";
 import { useToast } from "@/hooks/use-toast";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 
 interface PurchaseOptionsProps {
-  onCouponResponse: (response: CouponResponse | null) => void;
-  couponResponse: CouponResponse | null;
+  onCouponData: (response: CouponData | null) => void;
+  couponData: CouponData | null;
 }
 
 const optionsList = [
@@ -30,8 +30,8 @@ const optionsList = [
 ];
 
 export default function PurchaseOptions({
-  onCouponResponse,
-  couponResponse,
+  onCouponData,
+  couponData,
 }: PurchaseOptionsProps) {
   const [selectedOption, setSelectedOption] = useState<number>(1);
   const [promoCode, setPromoCode] = useState<string>("");
@@ -40,7 +40,7 @@ export default function PurchaseOptions({
     if (!promoCode.trim()) return;
 
     try {
-      const response = await axios.post<CouponResponse>(
+      const response = await axios.post<CouponData>(
         `${BASE_URL}/api/v1/coupons/validate`,
         {
           coupon_id: promoCode,
@@ -57,14 +57,14 @@ export default function PurchaseOptions({
         title: response.data.message,
       });
       if (response.data.valid) {
-        onCouponResponse(response.data);
+        onCouponData(response.data);
       } else {
-        onCouponResponse(null);
+        onCouponData(null);
       }
       console.log("sendPromoCode response:", response);
     } catch (error) {
       console.error("Error validating coupon:", error);
-      onCouponResponse(null);
+      onCouponData(null);
       const errorMessage = axios.isAxiosError(error)
         ? error.response?.data?.message || "Erro ao verificar disponibilidade"
         : "Erro ao verificar disponibilidade";
@@ -156,7 +156,7 @@ export default function PurchaseOptions({
         <span
           className={cn(
             "text-cyan dark:text-cyan-light text-[16px] absolute left-0 transition-all duration-500 ease-out",
-            couponResponse?.valid === true
+            couponData?.valid === true
               ? "opacity-100 translate-y-0 bottom-[-30px]"
               : "opacity-0 -translate-y-full bottom-[-10px] pointer-events-none"
           )}

@@ -2,6 +2,8 @@
 
 import PurchasePage from "@/components/home/purchasePage/PurchasePage";
 import StartEntering from "@/components/home/StartEntering";
+import { toast } from "@/hooks/use-toast";
+import { checkCepAvailability, getCepErrorMessage } from "@/lib/cep-api";
 import { useAvailabilityStore } from "@/store/availability-store";
 import { useEffect } from "react";
 
@@ -11,13 +13,35 @@ export default function Home() {
     (state) => state.setAvailability
   );
 
+  const checkCep = async () => {
+    try {
+      const { response: responseData, isAvailable } =
+        await checkCepAvailability(sessionStorage.getItem("cepLocation") || "");
+
+      toast({
+        status: isAvailable ? "success" : "error",
+        title: responseData.message,
+      });
+
+      if (isAvailable) {
+        setAvailability(true);
+      }
+    } catch (error) {
+      const errorMessage = getCepErrorMessage(error);
+      console.log("error", error);
+      toast({
+        status: "error",
+        title: errorMessage,
+      });
+    }
+  };
+
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
       sessionStorage.getItem("cepLocation")
     ) {
-
-      setAvailability(true);
+      checkCep();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

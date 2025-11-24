@@ -3,11 +3,11 @@
 import PurchaseOptions from "./PurchaseOptions";
 import PurchaseBenefits from "./PurchaseBenefits";
 import PurchaseForm from "./PurchaseForm";
-import { CouponResponse } from "@/types/couponTypes";
+import { CouponData } from "@/types/couponTypes";
 import { useState } from "react";
 
 export default function PurchasePage() {
-  const [couponResponse, setCouponResponse] = useState<CouponResponse | null>(
+  const [couponData, setCouponData] = useState<CouponData | null>(
     null
   );
   return (
@@ -22,9 +22,9 @@ export default function PurchasePage() {
           Mantenha-se sempre um passo à frente.
         </p>
       </section>
-      <PurchaseOptions couponResponse={couponResponse} onCouponResponse={setCouponResponse} />
+      <PurchaseOptions couponData={couponData} onCouponData={setCouponData} />
       <PurchaseBenefits />
-      <PurchaseForm />
+      <PurchaseForm couponData={couponData} />
     </div>
   );
 }

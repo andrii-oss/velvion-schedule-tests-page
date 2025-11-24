@@ -17,6 +17,7 @@ import { Button } from "../../ui/button";
 import axios from "axios";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CouponData } from "@/types/couponTypes";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URI;
 const baseLink = "https://www.velvion.com.br";
@@ -62,7 +63,10 @@ const formSchema = z.object({
 
 type FormSchema = z.infer<typeof formSchema>;
 
-export default function PurchaseForm() {
+interface PurchaseFormProps {
+  couponData: CouponData | null;
+}
+export default function PurchaseForm({ couponData }: PurchaseFormProps) {
   const form = useForm<FormSchema>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -86,6 +90,7 @@ export default function PurchaseForm() {
   const onSubmit = async (values: FormSchema) => {
     try {
       const response = await axios.post(`${BASE_URL}/api/v1/`, {
+        "payment_type": "installment_payment",
         cep: values.cpfCode,
         phone: "+55" + values.phoneNumber.replace(/\D/g, ""), // <- Sending in E.164 format
       });
